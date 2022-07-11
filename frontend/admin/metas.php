@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $grande_tema = pdi_get_grande_tema_all();
 $objetivos_ouse = pdi_get_objetivos_ouse_all();
 $ods = pdi_get_ods_all();
@@ -124,7 +124,7 @@ else :
 									<?php
 								} ?>
 									<div class="form-check form-check-inline form-check-inline-pdi">
-										<input class="form-check-input" type="checkbox" id="<?php echo $ods[$i]->slug ?>" name="ods[]" value="<?php echo $ods[$i]->id ?>" <?php echo (array_search($ods[$i]->id, $metaOds) !== false) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+										<input class="form-check-input" type="checkbox" id="<?php echo $ods[$i]->slug ?>" name="ods[]" value="<?php echo $ods[$i]->id ?>" <?php echo (array_search($ods[$i]->id, $metaOds) !== false && $metaOds) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?>>
 										<label class="form-check-label" for="<?php echo $ods[$i]->slug ?>">
 											<?php echo $ods[$i]->id . '. ' . $ods[$i]->titulo ?>
 										</label>
@@ -155,7 +155,7 @@ else :
 									<?php
 								} ?>
 									<div class="form-check form-check-inline form-check-inline-pdi">
-										<input class="form-check-input" type="checkbox" id="<?php echo $pne[$i]->slug ?>" name="pne[]" value="<?php echo $pne[$i]->id ?>" <?php echo (array_search($pne[$i]->id, $metaPne) !== false) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+										<input class="form-check-input" type="checkbox" id="<?php echo $pne[$i]->slug ?>" name="pne[]" value="<?php echo $pne[$i]->id ?>" <?php echo (array_search($pne[$i]->id, $metaPne) !== false && $metaPne) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?>>
 										<label class="form-check-label" for="<?php echo $pne[$i]->slug ?>">
 											<?php echo $pne[$i]->id . '. ' . $pne[$i]->titulo ?>
 										</label>
@@ -176,8 +176,12 @@ else :
 						<div class="col-md-3 col-label">
 							<div class="">Meta do Indicador</div>
 						</div>
-						<div class="form-group col-md-9">
+						<div class="form-group col-md-2">
 							<input type="text" name="valor_meta" id="valor_meta" class="form-control valor-meta  maskValor" value="<?php echo format_real($meta->valor_meta) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						</div>
+						<div class="form-group col-md-4 form-group-inline">
+							<label for="justif-valor-meta"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
+							<input type="text" name="justif_valor_meta" id="justif-valor-meta" class="form-control" value="<?php echo $meta->justif_valor_meta ?>">
 						</div>
 						<div class="clear-line"></div>
 						<div class="col-md-3 col-label">
@@ -186,6 +190,10 @@ else :
 						</div>
 						<div class="form-group col-md-2">
 							<input type="text" name="valor_inicial_meta" id="valor-inicial-meta" class="form-control maskValor" value="<?php echo format_real($meta->valor_inicial) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						</div>
+						<div class="form-group col-md-4 form-group-inline">
+							<label for="justif-valor-inicial"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
+							<input type="text" name="justif_valor_inicial" id="justif-valor-inicial" class="form-control" value="<?php echo $meta->justif_valor_inicial ?>">
 						</div>
 						<div class="form-group col-md-3 form-group-inline">
 							<label for="">Data do Registro</label>

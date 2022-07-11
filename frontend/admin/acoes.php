@@ -148,7 +148,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 					<div class="col-md-2 col-label">
 						<div class="">Ator</div>
 					</div>
-					<div class="form-group col-md-10">
+					<div class="form-group col-md-4">
 						<select name="ator_acao" id="ator-acao" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
 							<option value="">Selecione</option>
 							<?php foreach ($atores as $ator) : ?>
@@ -170,6 +170,10 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						</select> -->
 
 						</select>
+					</div>
+					<div class="form-group col-md-4 form-group-inline">
+						<label for="prazo-execucao">Prazo de Execução</label>
+						<input type="text" name="prazo_execucao" id="prazo-execucao" class="form-control" value="<?php echo $acao->prazo_execucao ?>" />
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">

@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $eixos = pdi_get_eixo_all();
 $atores = pdi_get_atores_all();
 $indicadores = pdi_get_indicadores_all();
@@ -113,6 +113,10 @@ else :
 						<!-- <select name="ano_acao" id="ano-acao" class="form-control">
 							<option value="">Selecione o Indicador Meta</option>
 						</select> -->
+					</div>
+					<div class="form-group col-md-4 form-group-inline">
+						<label for="prazo-execucao">Prazo de Execução</label>
+						<input type="text" name="prazo_execucao" id="prazo-execucao" class="form-control">
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">

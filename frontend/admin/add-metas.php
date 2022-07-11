@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $ods = pdi_get_ods_all();
 $pne = pdi_get_pne_all();
 $grande_tema = pdi_get_grande_tema_all();
@@ -38,7 +38,7 @@ else :
 					<div class="form-group col-md-9">
 						<select name="objetivo_ouse" id="objetivo-ouse" class="form-control" disabled>
 							<option value="">Selecione o Grande Tema</option>
-							
+
 						</select>
 					</div>
 					<div class="clear-line"></div>
@@ -121,8 +121,12 @@ else :
 					<div class="col-md-3 col-label">
 						<div class="">Meta do Indicador</div>
 					</div>
-					<div class="form-group col-md-9">
+					<div class="form-group col-md-2">
 						<input type="text" name="valor_meta" id="valor_meta" class="form-control valor-meta  maskValor">
+					</div>
+					<div class="form-group col-md-4 form-group-inline">
+						<label for="justif-valor-meta"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
+						<input type="text" name="justif_valor_meta" id="justif-valor-meta" class="form-control">
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-3 col-label">
@@ -132,8 +136,12 @@ else :
 					<div class="form-group col-md-2">
 						<input type="text" name="valor_inicial_meta" id="valor-inicial-meta" class="form-control maskValor">
 					</div>
+					<div class="form-group col-md-4 form-group-inline">
+						<label for="justif-valor-inicial"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
+						<input type="text" name="justif_valor_inicial" id="justif-valor-inicial" class="form-control">
+					</div>
 					<div class="form-group col-md-3 form-group-inline">
-						<label for="">Data do Registro</label>
+						<label for="data-registro-meta">Data do Registro</label>
 						<input type="text" name="data_registro_meta" id="data-registro-meta" class="form-control maskData">
 					</div>
 					<div class="clear-line"></div>

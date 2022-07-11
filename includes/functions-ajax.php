@@ -48,6 +48,7 @@ function pdi_save_new_acao()
 		'percentual_cumprido' => convert_real_float($args->percentual_cumprido),
 		'data_registro' => convert_data_db($args->data_registro),
 		'ano_acao' => intval($args->ano_acao),
+		'prazo_execucao' => $args->prazo_execucao,
 		'justificativa' => $args->justificativa_acao,
 		'user_id' => get_current_user_id(),
 		'created_at' => date('Y-m-d H:i:s'),
@@ -63,6 +64,7 @@ function pdi_save_new_acao()
 		'%f',
 		'%s',
 		'%d',
+		'%s',
 		'%s',
 		'%d',
 		'%s',
@@ -127,6 +129,7 @@ function pdi_update_acao()
 		'percentual_cumprido' => convert_real_float($args->percentual_cumprido),
 		'data_registro' => convert_data_db($args->data_registro),
 		'ano_acao' => intval($args->ano_acao),
+		'prazo_execucao' => $args->prazo_execucao,
 		'justificativa' => $args->justificativa_acao,
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
@@ -140,6 +143,7 @@ function pdi_update_acao()
 		'%f',
 		'%s',
 		'%d',
+		'%s',
 		'%s',
 		'%s',
 	];
@@ -182,7 +186,9 @@ function pdi_save_meta()
 		'ods' => json_encode($args->ods),
 		'pne' => json_encode($args->pne),
 		'valor_meta' => convert_real_float($args->valor_meta),
+		'justif_valor_meta' => $args->justif_valor_meta,
 		'valor_inicial' => convert_real_float($args->valor_inicial_meta),
+		'justif_valor_inicial' => $args->justif_valor_inicial,
 		'data_registro' => convert_data_db($args->data_registro_meta),
 		'created_at' => date('Y-m-d H:i:s'),
 		'updated_at' => date('Y-m-d H:i:s'),
@@ -196,7 +202,9 @@ function pdi_save_meta()
 		'%s',
 		'%s',
 		'%f',
+		'%s',
 		'%f',
+		'%s',
 		'%s',
 		'%s',
 		'%s',
@@ -266,7 +274,9 @@ function pdi_update_meta()
 		'ods' => json_encode($args->ods),
 		'pne' => json_encode($args->pne),
 		'valor_meta' => convert_real_float($args->valor_meta),
+		'justif_valor_meta' => $args->justif_valor_meta,
 		'valor_inicial' => convert_real_float($args->valor_inicial_meta),
+		'justif_valor_inicial' => $args->justif_valor_inicial,
 		'data_registro' => convert_data_db($args->data_registro_meta),
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
@@ -279,7 +289,9 @@ function pdi_update_meta()
 		'%s',
 		'%s',
 		'%f',
+		'%s',
 		'%f',
+		'%s',
 		'%s',
 		'%s',
 	];
@@ -1116,7 +1128,9 @@ function pdi_export_metas()
 		'ODS' => 'string',
 		'PNE' => 'string',
 		'META_INDICADOR' => 'string',
+		'JUSTIFICATIVA_META' => 'string',
 		'META_INICIAL' => 'string',
+		'JUSTIFICATIVA_META_INICIAL' => 'string',
 		'DATA REGISTRO' => 'string',
 		'ANO_INDICADOR' => 'string',
 		'META_ANUAL_INDICADOR' => 'string',
@@ -1171,7 +1185,9 @@ function pdi_export_metas()
 			$ods__,
 			$pne__,
 			format_real($meta->valor_meta),
+			$meta->justif_valor_meta,
 			format_real($meta->valor_inicial),
+			$meta->justif_valor_inicial,
 			convert_data_front($meta->data_registro),
 			$anoIndicador,
 			$metaAnualIndicador,
@@ -1228,6 +1244,7 @@ function pdi_export_acoes()
 		'ATOR_ENVOLVIDO' => 'string',
 		'DESC_ACAO' => 'string',
 		'ANO_ACAO' => 'integer',
+		'PRAZO_EXECUCAO' => 'string',
 		'PERCENTUAL_CUMPRIDO' => 'string',
 		'DATA_REGISTRO' => 'string',
 		'JUSTIFICATIVA_PLANO' => 'string',
@@ -1251,6 +1268,7 @@ function pdi_export_acoes()
 			$acoes->atores[0]->descricao,
 			$acoes->descricao_acao,
 			$acoes->ano_acao,
+			$acoes->prazo_execucao,
 			format_real($acoes->percentual_cumprido),
 			convert_data_front($acoes->data_registro),
 			$acoes->justificativa
@@ -1550,7 +1568,7 @@ function pdi_configs_update()
 			$result[] = pdi_update_configs(['meta_value' => $value], ['meta_key' => $key], ['%s'], ['%s']);
 		}
 	} */
-	
+
 	wp_send_json(
 		array(
 			'status' => $status,
