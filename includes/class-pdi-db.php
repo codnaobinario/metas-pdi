@@ -203,6 +203,7 @@ class PDI_DB
 		global $wpdb;
 		$query = "CREATE TABLE " . self::$prefix_table . self::$table_indicadores . " ( "
 			. "id bigint unsigned NOT NULL AUTO_INCREMENT,  "
+			. "number int(10) DEFAULT NULL,  "
 			. "grande_tema_id bigint NOT NULL,  "
 			. "objetivo_ouse_id bigint NOT NULL,  "
 			. "titulo varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,  "
@@ -728,7 +729,7 @@ class PDI_DB
 	 * @param string $table (Nome da tabela a ser buscada)
 	 * @return object
 	 */
-	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC')
+	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC', string $query_string = null)
 	{
 		global $wpdb;
 		$query = "SELECT * FROM " . self::$prefix_table . $table;
@@ -771,6 +772,10 @@ class PDI_DB
 		if ($per_page) {
 			$offset = ($per_page * ($page - 1));
 			$query .= " LIMIT {$per_page} OFFSET {$offset}";
+		}
+
+		if ($query_string) {
+			$query .= $query_string;
 		}
 
 		$select = $wpdb->get_results(

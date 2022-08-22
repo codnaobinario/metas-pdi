@@ -179,6 +179,7 @@ function pdi_save_meta()
 	$args = (object) $args;
 
 	$indicador = [
+		'number' => intval($args->number),
 		'grande_tema_id' => intval($args->grande_tema),
 		'objetivo_ouse_id' => intval($args->objetivo_ouse),
 		'titulo' => $args->indicador,
@@ -195,6 +196,7 @@ function pdi_save_meta()
 	];
 
 	$format = [
+		'%d',
 		'%d',
 		'%d',
 		'%s',
@@ -267,6 +269,7 @@ function pdi_update_meta()
 	$args = (object) $args;
 
 	$indicador = [
+		'number' => intval($args->number),
 		'grande_tema_id' => intval($args->grande_tema),
 		'objetivo_ouse_id' => intval($args->objetivo_ouse),
 		'titulo' => $args->indicador,
@@ -282,6 +285,7 @@ function pdi_update_meta()
 	];
 
 	$format = [
+		'%d',
 		'%d',
 		'%d',
 		'%s',
@@ -377,7 +381,7 @@ function pdi_filter_acao()
 		. " INNER JOIN " . PREFIXO_TABLE . TABLE_INDICADORES
 		. " ON " . PREFIXO_TABLE . TABLE_INDICADORES . ".id = " . PREFIXO_TABLE . TABLE_ACOES . ".indicador_id";
 
-	if ($args->eixo_estruturante || $args->grande_tema || $args->objetivo_ouse) {
+	if ($args->eixo_estruturante || $args->grande_tema || $args->objetivo_ouse || $args->ator) {
 		$where = " WHERE ";
 		if ($args->eixo_estruturante) {
 			$where .= PREFIXO_TABLE . TABLE_ACOES . ".eixo_id = " . $args->eixo_estruturante . " AND ";
@@ -387,6 +391,9 @@ function pdi_filter_acao()
 		}
 		if ($args->objetivo_ouse) {
 			$where .= PREFIXO_TABLE . TABLE_INDICADORES . ".objetivo_ouse_id = " . $args->objetivo_ouse . " AND ";
+		}
+		if ($args->ator) {
+			$where .= PREFIXO_TABLE . TABLE_ACOES . ".ator = " . $args->ator . " AND ";
 		}
 		$where = rtrim($where, ' AND ');
 
@@ -430,8 +437,17 @@ function pdi_filter_metas()
 	$filter = [];
 	if ($args->grande_tema) $filter['grande_tema_id'] = intval($args->grande_tema);
 	if ($args->objetivo_ouse) $filter['objetivo_ouse_id'] = intval($args->objetivo_ouse);
+	if ($args->number) {
+		// if (!$filter) {
+		// 	$query_string = ' WHERE ' . PREFIXO_TABLE . TABLE_INDICADORES . '.number = ' . $args->number . ' OR ' . PREFIXO_TABLE . TABLE_INDICADORES . '.id = ' . $args->number;
+		// } else {
+		// 	$query_string = ' AND (' . PREFIXO_TABLE . TABLE_INDICADORES . '.number = ' . $args->number . ' OR ' . PREFIXO_TABLE . TABLE_INDICADORES . '.id = ' . $args->number . ' )';
+		// }
+		$filter['number'] = intval($args->number);
+		// $filter['id'] = intval($args->number);
+	}
 
-	$select = pdi_get_indicadores_all($filter);
+	$select = pdi_get_indicadores_all($filter, null, 1, null, 'ASC', $query_string);
 
 	if (!$select) $select['error'] = 'Nenhum registro escontrado';
 	ob_start();
@@ -442,7 +458,7 @@ function pdi_filter_metas()
 		array(
 			'status' => true,
 			'indicador' => $select,
-			'html' => $html
+			'html' => $html,
 		)
 	);
 	exit;
@@ -1582,3 +1598,116 @@ function pdi_configs_update()
 }
 add_action('wp_ajax_pdi_configs_update', 'pdi_configs_update');
 add_action('wp_ajax_nopriv_pdi_configs_update', 'pdi_configs_update');
+
+function pdi_atores_update()
+{
+	$atorId = filter_input(INPUT_POST, 'ator_id', FILTER_SANITIZE_NUMBER_INT);
+	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
+	parse_str($form, $args);
+	$args = (object) $args;
+
+	$dados = [
+		"descricao" => $args->descricao,
+		"active" => intval($args->active),
+		"updated_at" => date('Y-m-d H:i:s'),
+	];
+	$format = [
+		"%s",
+		"%d",
+		"%s",
+	];
+	$where = ["id" => intval($atorId)];
+	$format_where = ['%d'];
+
+	$update = pdi_update_atores($dados, $where, $format, $format_where);
+
+	if (!$update) {
+		wp_send_json(
+			array(
+				'status' => false,
+				'error' => 'Erro ao atualizar Ator',
+				'update' => $update
+			)
+		);
+		exit;
+	}
+
+	wp_send_json(
+		array(
+			'status' => true,
+			'update' => $update
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_update', 'pdi_atores_update');
+add_action('wp_ajax_nopriv_pdi_atores_update', 'pdi_atores_update');
+
+function pdi_atores_save()
+{
+	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
+	parse_str($form, $args);
+	$args = (object) $args;
+
+	$dados = [
+		'descricao' => $args->descricao,
+		'active' => intval($args->active),
+		'created_at' => date('Y-m-d H:i:s'),
+		'updated_at' => date('Y-m-d H:i:s'),
+	];
+	$format = [
+		'%s',
+		'%d',
+		'%s',
+		'%s',
+	];
+
+	$insert = pdi_set_atores($dados, $format);
+
+	if (!$insert) {
+		wp_send_json(
+			array(
+				'status' => false,
+				'error' => 'Erro ao inserir Ator',
+			)
+		);
+		exit;
+	}
+
+	wp_send_json(
+		array(
+			'status' => true,
+			'ator_id' => $insert,
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_save', 'pdi_atores_save');
+add_action('wp_ajax_nopriv_pdi_atores_save', 'pdi_atores_save');
+
+function pdi_atores_remove()
+{
+	$atorId = filter_input(INPUT_POST, 'ator_id', FILTER_SANITIZE_NUMBER_INT);
+
+	$status = true;
+	$args = ['id' => $atorId];
+	$format = ['%d'];
+	$remove = pdi_delete_atores($args, $format);
+
+	ob_start();
+	pdi_get_template_front('admin/table-atores');
+	$html = ob_get_clean();
+
+	if (!$remove) {
+		$status = false;
+	}
+	wp_send_json(
+		array(
+			'status' => $status,
+			'html' => $html,
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_remove', 'pdi_atores_remove');
+add_action('wp_ajax_nopriv_pdi_atores_remove', 'pdi_atores_remove');

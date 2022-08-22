@@ -19,6 +19,13 @@ else :
 			<form id="add-indicadores-meta" action="">
 				<div class="form-row row">
 					<div class="col-md-3 col-label">
+						<div class="">Número da Meta</div>
+					</div>
+					<div class="form-group col-md-1">
+						<input type="text" name="number" id="number" class="form-control onlyNumber">
+					</div>
+					<div class="clear-line"></div>
+					<div class="col-md-3 col-label">
 						<div class="">Grande Tema Estratégico</div>
 					</div>
 					<div class="form-group col-md-9">

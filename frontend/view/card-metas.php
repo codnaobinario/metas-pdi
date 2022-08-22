@@ -1,14 +1,14 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $view_pagination = 5;
 $page = 1;
-if(isset($_GET['page'])) $page = $_GET['page'];
+if (isset($_GET['page'])) $page = $_GET['page'];
 
 $count_total = pdi_count_indicadores_all(['active' => 1]);
 $pagnation = ceil(intval($count_total) / $view_pagination);
 
 if (!$variaveis) {
-	$indicadores = pdi_get_indicadores_all(['active' => 1], $view_pagination, $page);
+	$indicadores = pdi_get_indicadores_all(['active' => 1], $view_pagination, $page, 'grande_tema_id');
 } else {
 	$indicadores = $variaveis['indicadores'];
 	$page = $variaveis['page'];
@@ -40,13 +40,13 @@ if (!$variaveis) {
 	?>
 	<div class="col-md-12 mb-5 card-metas">
 		<div id="indicador-<?php echo $indicador->id ?>" class="card card-indicadores" style="color: <?php echo $colors[1] ?>">
-		<input type="hidden" name="page" id="page" value="<?php echo $page ?>">
+			<input type="hidden" name="page" id="page" value="<?php echo $page ?>">
 			<div class="card-indicadores-title">
 				<div class="card-top-left">
 					<a href="<?php echo site_url('/detalhes-meta/?indicador_id=' . $indicador->id) ?>">
 						<div class="bar" style="background-color: <?php echo $colors[1] ?>"></div>
 						<div class="meta">META</div>
-						<div class="id"><?php echo $indicador->id ?></div>
+						<div class="id"><?php echo $indicador->number ? $indicador->number : $indicador->id ?></div>
 					</a>
 				</div>
 				<div class="card-top-center">

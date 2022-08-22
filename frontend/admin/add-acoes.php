@@ -15,17 +15,17 @@ else :
 	<div class="container-fluid pdi-container">
 		<div class="pdi-plugin-title">
 			<span class="dashicons dashicons-analytics"></span>
-			PDI / Adicionar Ação
+			<?php _e('PDI / Adicionar Ação', PDI_TEXT_DOMAIN) ?>
 		</div>
 		<div class="card card-full p-0">
 			<form action="">
 				<div class="form-row row">
 					<div class="col-md-2 col-label">
-						<div class="">Indicador Meta</div>
+						<div class=""><?php _e('Indicador Meta', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-10">
 						<select name="indicador_meta" id="indicador-meta" class="form-control">
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($indicadores as $indicador) : ?>
 								<?php if ($indicador->active != 0) : ?>
 									<option value="<?php echo $indicador->id ?>"><?php echo $indicador->id . '. ' . $indicador->titulo ?></option>
@@ -35,11 +35,11 @@ else :
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Eixo</div>
+						<div class=""><?php _e('Eixo', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-10">
 						<select name="eixo" id="eixo" class="form-control">
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($eixos as $eixo) : ?>
 								<?php if ($eixo->active != 0) : ?>
 									<option value="<?php echo $eixo->id ?>"><?php echo $eixo->descricao ?></option>
@@ -49,7 +49,7 @@ else :
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Objetivo Específico</div>
+						<div class=""><?php _e('Objetivo Específico', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-10">
 						<div class="card card-full m-2 bk-admin mw-100 overflow-initial">
@@ -68,7 +68,7 @@ else :
 								<div class="col-md-4 objetivos-especificos-button">
 									<button type="button" class="btn btn-success add-objetivo-especifico">
 										<span class="dashicons dashicons-plus"></span>
-										Adicionar Objetivo Específico
+										<?php _e('Adicionar Objetivo Específico', PDI_TEXT_DOMAIN) ?>
 									</button>
 								</div>
 							</div>
@@ -78,14 +78,18 @@ else :
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Descrição da Ação</div>
+						<div class="">
+							<?php _e('Descrição da Ação', PDI_TEXT_DOMAIN) ?>
+						</div>
 					</div>
 					<div class="form-group col-md-10">
 						<input type="text" name="desc_acao" id="desc-acao" class="form-control">
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Ator</div>
+						<div class="">
+							<?php _e('Ator', PDI_TEXT_DOMAIN) ?>
+						</div>
 					</div>
 					<div class="form-group col-md-10">
 						<select name="ator_acao" id="ator-acao" class="form-control">
@@ -95,7 +99,7 @@ else :
 									<option value="<?php echo $at[0]->id ?>"><?php echo $at[0]->descricao ?></option>
 								<?php endif; ?>
 							<?php else : ?>
-								<option value="">Selecione</option>
+								<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 								<?php foreach ($atores as $ator) : ?>
 									<?php if ($ator->active != 0) : ?>
 										<option value="<?php echo $ator->id ?>"><?php echo $ator->descricao ?></option>
@@ -106,7 +110,7 @@ else :
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Ano da Ação</div>
+						<div class=""><?php _e('Ano da Ação', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-2">
 						<input type="text" name="ano_acao" id="ano-acao" class="form-control">
@@ -115,29 +119,29 @@ else :
 						</select> -->
 					</div>
 					<div class="form-group col-md-4 form-group-inline">
-						<label for="prazo-execucao">Prazo de Execução</label>
+						<label for="prazo-execucao"><?php _e('Prazo de Execução', PDI_TEXT_DOMAIN) ?></label>
 						<input type="text" name="prazo_execucao" id="prazo-execucao" class="form-control">
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
-						<div class="">Percentual Cumprido</div>
+						<div class=""><?php _e('Percentual Cumprido', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-2">
 						<input type="text" name="percentual_cumprido" id="percentual-cumprido" class="form-control maskValor" />
 					</div>
 					<div class="form-group col-md-3 form-group-inline">
-						<label for="">Data do Registro</label>
+						<label for=""><?php _e('Data do Registro', PDI_TEXT_DOMAIN) ?></label>
 						<input type="text" name="data_registro" class="form-control maskData">
 					</div>
 					<div class="form-group col-md-5 form-group-inline">
-						<label for="">Justificativa</label>
+						<label for=""><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
 						<input type="text" name="justificativa_acao" id="justificativa-acao" class="form-control" />
 					</div>
 					<div class="clear-line"></div>
 
 					<div class="col-md-12">
 						<p class="btn-actions">
-							<button type="button" class="button button-primary add-acoes">Salvar Ação</button>
+							<button type="button" class="button button-primary add-acoes"><?php _e('Salvar Ação', PDI_TEXT_DOMAIN) ?></button>
 						</p>
 					</div>
 				</div>

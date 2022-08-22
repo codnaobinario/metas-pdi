@@ -16,17 +16,21 @@ else :
 		<div class="container-fluid pdi-container">
 			<div class="pdi-plugin-title">
 				<span class="dashicons dashicons-analytics"></span>
-				PDI / Objetivos Ouse
+				<?php _e('PDI / Metas', PDI_TEXT_DOMAIN) ?>
 			</div>
 			<div class="card card-full p-0">
 				<form action="" id="pdi-admin-filter-metas">
 					<div class="form-row row">
 						<div class="col-md-3 col-label">
-							<div class="">Selecionar Grande Tema Estratégico</div>
+							<div class="">
+								<?php _e('Selecionar Grande Tema Estratégico', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<select name="grande_tema" id="grande-tema" class="form-control admin-filter-metas">
-								<option value="">Selecione</option>
+								<option value="">
+									<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
+								</option>
 								<?php foreach ($grande_tema as $gt) : ?>
 									<?php if ($gt->active != 0) : ?>
 										<option value="<?php echo $gt->id ?>"><?php echo $gt->descricao ?></option>
@@ -35,17 +39,29 @@ else :
 							</select>
 						</div>
 						<div class="col-md-3 col-label">
-							<div class="">Selecionar Objetivo Ouse</div>
+							<div class="">
+								<?php _e('Selecionar Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<select name="objetivo_ouse" id="objetivo-ouse" class="form-control admin-filter-metas">
-								<option value="">Selecione</option>
+								<option value="">
+									<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
+								</option>
 								<?php foreach ($objetivos_ouse as $ouse) : ?>
 									<?php if ($ouse->active != 0) : ?>
 										<option value="<?php echo $ouse->id ?>"><?php echo $ouse->descricao ?></option>
 									<?php endif; ?>
 								<?php endforeach; ?>
 							</select>
+						</div>
+						<div class="col-md-3 col-label">
+							<div class="">
+								<?php _e('Número do Indicador', PDI_TEXT_DOMAIN) ?>
+							</div>
+						</div>
+						<div class="form-group col-md-2">
+							<input type="text" class="form-control onlyNumber admin-filter-metas-number" name="number" id="number">
 						</div>
 					</div>
 				</form>
@@ -63,18 +79,31 @@ else :
 		<div class="container-fluid pdi-container">
 			<div class="pdi-plugin-title">
 				<span class="dashicons dashicons-analytics"></span>
-				PDI / Editar Meta
+				<?php _e('PDI / Editar Meta', PDI_TEXT_DOMAIN) ?>
 			</div>
 			<div class="card card-full p-0">
 				<form id="add-indicadores-meta" action="">
 					<input type="hidden" name="id" value="<?php echo $meta->id ?>">
 					<div class="form-row row">
 						<div class="col-md-3 col-label">
-							<div class="">Grande Tema Estratégico</div>
+							<div class="">
+								<?php _e('Número da Meta', PDI_TEXT_DOMAIN) ?>
+							</div>
+						</div>
+						<div class="form-group col-md-1">
+							<input type="text" name="number" id="number" class="form-control onlyNumber" value="<?php echo $meta->number ?>">
+						</div>
+						<div class="clear-line"></div>
+						<div class="col-md-3 col-label">
+							<div class="">
+								<?php _e('Grande Tema Estratégico', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<select name="grande_tema" id="grande-tema" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
-								<option value="">Selecione</option>
+								<option value="">
+									<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
+								</option>
 								<?php foreach ($grande_tema as $gt) : ?>
 									<?php if ($gt->active != 0) : ?>
 										<option value="<?php echo $gt->id ?>" <?php echo ($gt->id == $meta->grande_tema_id) ? 'selected="selected"'  : '' ?>><?php echo $gt->descricao ?></option>
@@ -84,11 +113,15 @@ else :
 						</div>
 						<div class="clear-line"></div>
 						<div class="col-md-3 col-label">
-							<div class="">Objetivo Ouse</div>
+							<div class="">
+								<?php _e('Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<select name="objetivo_ouse" id="objetivo-ouse" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
-								<option value="">Selecione</option>
+								<option value="">
+									<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
+								</option>
 								<?php foreach ($objetivos_ouse as $ouse) : ?>
 									<?php if ($ouse->active != 0) : ?>
 										<option value="<?php echo $ouse->id ?>" <?php echo ($ouse->id == $meta->objetivo_ouse_id) ? 'selected="selected"'  : '' ?>><?php echo $ouse->descricao ?></option>
@@ -98,14 +131,18 @@ else :
 						</div>
 						<div class="clear-line"></div>
 						<div class="col-md-3 col-label">
-							<div class="">Indicador</div>
+							<div class="">
+								<?php _e('Indicador', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<input type="text" name="indicador" id="indicador" class="form-control" value="<?php echo $meta->titulo ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
 						</div>
 						<div class="clear-line"></div>
 						<div class="col-md-3 col-label">
-							<div class="">Descrição da Meta</div>
+							<div class="">
+								<?php _e('Descrição da Meta', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-9">
 							<textarea name="desc_meta" id="desc-meta" class="form-control" rows="3" <?php echo ($nivel_1) ? 'readonly' : '' ?>><?php echo $meta->descricao ?></textarea>
@@ -113,7 +150,9 @@ else :
 						<div class="clear-line"></div>
 						<?php if ($ods) : ?>
 							<div class="col-md-3 col-label">
-								<div class="">ODS</div>
+								<div class="">
+									<?php _e('ODS', PDI_TEXT_DOMAIN) ?>
+								</div>
 							</div>
 							<?php $x = 0; ?>
 							<?php $count = count($ods); ?>
@@ -144,7 +183,9 @@ else :
 						<?php endif; ?>
 						<?php if ($pne) : ?>
 							<div class="col-md-3 col-label">
-								<div class="">PNE</div>
+								<div class="">
+									<?php _e('PNE', PDI_TEXT_DOMAIN) ?>
+								</div>
 							</div>
 							<?php $x = 0; ?>
 							<?php $count = count($pne); ?>
@@ -174,7 +215,9 @@ else :
 							<div class="clear-line"></div>
 						<?php endif; ?>
 						<div class="col-md-3 col-label">
-							<div class="">Meta do Indicador</div>
+							<div class="">
+								<?php _e('Meta do Indicador', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-2">
 							<input type="text" name="valor_meta" id="valor_meta" class="form-control valor-meta  maskValor" value="<?php echo format_real($meta->valor_meta) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
@@ -185,8 +228,12 @@ else :
 						</div>
 						<div class="clear-line"></div>
 						<div class="col-md-3 col-label">
-							<div class="">Valor Inicial</div>
-							<div class="label-informativo">Dado coletado que é parâmetro para definição da meta.</div>
+							<div class="">
+								<?php _e('Valor Inicial', PDI_TEXT_DOMAIN) ?>
+							</div>
+							<div class="label-informativo">
+								<?php _e('Dado coletado que é parâmetro para definição da meta.', PDI_TEXT_DOMAIN) ?>
+							</div>
 						</div>
 						<div class="form-group col-md-2">
 							<input type="text" name="valor_inicial_meta" id="valor-inicial-meta" class="form-control maskValor" value="<?php echo format_real($meta->valor_inicial) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
@@ -196,7 +243,9 @@ else :
 							<input type="text" name="justif_valor_inicial" id="justif-valor-inicial" class="form-control" value="<?php echo $meta->justif_valor_inicial ?>">
 						</div>
 						<div class="form-group col-md-3 form-group-inline">
-							<label for="">Data do Registro</label>
+							<label for="">
+								<?php _e('Data do Registro', PDI_TEXT_DOMAIN) ?>
+							</label>
 							<input type="text" name="data_registro_meta" id="data-registro-meta" class="form-control maskData" value="<?php echo convert_data_front($meta->data_registro) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
 						</div>
 						<div class="clear-line"></div>
@@ -207,23 +256,33 @@ else :
 										<li class="blocos-indicadores-anos">
 											<input type="hidden" name="ano_id[]" value="<?php echo $ano->id ?>">
 											<div class="line-indicadores-anos">
-												<label for="">Ano</label>
+												<label for="">
+													<?php _e('Ano', PDI_TEXT_DOMAIN) ?>
+												</label>
 												<input type="text" name="ano_meta[]" class="form-control maskAno" value="<?php echo $ano->ano ?>">
 											</div>
 											<div class="line-indicadores-anos">
-												<label for="">Valor</label>
+												<label for="">
+													<?php _e('Valor', PDI_TEXT_DOMAIN) ?>
+												</label>
 												<input type="text" name="valor_ano_meta[]" class="form-control maskValor" value="<?php echo format_real($ano->valor) ?>">
 											</div>
 											<div class="line-indicadores-anos">
-												<label for="">Valor Previsto</label>
+												<label for="">
+													<?php _e('Valor Previsto', PDI_TEXT_DOMAIN) ?>
+												</label>
 												<input type="text" name="valor_previsto_ano_meta[]" class="form-control maskValor" value="<?php echo format_real($ano->valor_previsto) ?>">
 											</div>
 											<div class="line-indicadores-anos">
-												<label for="">Data do Registro</label>
+												<label for="">
+													<?php _e('Data do Registro', PDI_TEXT_DOMAIN) ?>
+												</label>
 												<input type="text" name="data_registro_ano_meta[]" class="form-control maskData" value="<?php echo convert_data_front($ano->data_registro) ?>">
 											</div>
 											<div class="line-indicadores-anos">
-												<label for="">Justificativa</label>
+												<label for="">
+													<?php _e('Justificativa', PDI_TEXT_DOMAIN) ?>
+												</label>
 												<input type="text" name="justificativa_ano_meta[]" class="form-control" value="<?php echo $ano->justificativa ?>">
 											</div>
 											<div class="line-indicadores-anos">
@@ -237,7 +296,7 @@ else :
 								<div class="indicadores-button">
 									<button type="button" class="btn btn-success add-indicadores-anos" <?php echo ($nivel_1) ? 'disabled' : '' ?>>
 										<span class="dashicons dashicons-plus"></span>
-										Adicionar Indicador Ano
+										<?php _e('Adicionar Indicador Ano', PDI_TEXT_DOMAIN) ?>
 									</button>
 								</div>
 							</div>
@@ -245,7 +304,9 @@ else :
 						<div class="clear-line"></div>
 						<div class="col-md-12">
 							<p class="btn-actions">
-								<button type="button" class="button button-primary update-indicador-meta">Salvar Meta</button>
+								<button type="button" class="button button-primary update-indicador-meta">
+									<?php _e('Salvar Meta', PDI_TEXT_DOMAIN) ?>
+								</button>
 							</p>
 						</div>
 					</div>

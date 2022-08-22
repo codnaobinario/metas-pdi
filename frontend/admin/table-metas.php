@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 if ($variaveis) {
 	$indicadores = $variaveis;
 } else {
@@ -12,7 +12,10 @@ if ($variaveis) {
 			<?php foreach ($indicadores as $indicador) : ?>
 				<tr>
 					<td data-indicador-id="<?php echo $indicador->id ?>">
-						<a href="?page=pdi-metas&indicador_id=<?php echo $indicador->id ?>"><?php echo $indicador->id . ' - ' . $indicador->titulo ?></a>
+						<?php $indicador_number = $indicador->number ? $indicador->number : $indicador->id ?>
+						<a href="?page=pdi-metas&indicador_id=<?php echo $indicador->id ?>">
+							<?php echo $indicador_number . ' - ' . $indicador->titulo ?>
+						</a>
 					</td>
 					<td class="td-disabled">
 						<a title="<?php echo ($indicador->active != 0) ? 'Desabilitar' : 'Habilitar' ?>" class="btn-disabled btn-status-indicador <?php echo ($indicador->active != 0) ? 'enabled' : 'disabled' ?>" data-indicador-id="<?php echo $indicador->id ?>" data-indicador-status="<?php echo ($indicador->active != 0) ? 'true' : 'false' ?>">

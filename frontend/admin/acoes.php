@@ -3,6 +3,7 @@ defined('ABSPATH') or die('No script kiddies please!');
 $grandeTema = pdi_get_grande_tema_all();
 $objetivoOuse = pdi_get_objetivos_ouse_all();
 $eixos = pdi_get_eixo_all();
+$atores = pdi_get_atores_all();
 global $current_user;
 $nivel_1 = in_array('pdi_nivel_1', $current_user->roles);
 $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
@@ -17,11 +18,11 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 			<form action="" id="pdi-admin-filter-acoes">
 				<div class="form-row row">
 					<div class="col-md-3 col-label">
-						<div class="">Selecionar Grande Tema Estratégico</div>
+						<div class=""><?php _e('Selecionar Grande Tema Estratégico', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-9">
 						<select name="grande_tema" id="grande-tema" class="form-control admin-filter-acoes">
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($grandeTema as $gt) : ?>
 								<?php if ($gt->active != 0) : ?>
 									<option value="<?php echo $gt->id ?>"><?php echo $gt->descricao ?></option>
@@ -30,11 +31,11 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						</select>
 					</div>
 					<div class="col-md-3 col-label">
-						<div class="">Selecionar Objetivo Ouse</div>
+						<div class=""><?php _e('Selecionar Objetivo Ouse', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-9">
 						<select name="objetivo_ouse" id="objetivo-ouse" class="form-control admin-filter-acoes">
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($objetivoOuse as $ouse) : ?>
 								<?php if ($ouse->active != 0) : ?>
 									<option value="<?php echo $ouse->id ?>"><?php echo $ouse->descricao ?></option>
@@ -43,14 +44,27 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						</select>
 					</div>
 					<div class="col-md-3 col-label">
-						<div class="">Selecionar Eixo Estruturante</div>
+						<div class=""><?php _e('Selecionar Eixo Estruturante', PDI_TEXT_DOMAIN) ?></div>
 					</div>
 					<div class="form-group col-md-9">
 						<select name="eixo_estruturante" id="eixo-estruturante" class="form-control admin-filter-acoes">
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($eixos as $eixo) : ?>
 								<?php if ($eixo->active != 0) : ?>
 									<option value="<?php echo $eixo->id ?>"><?php echo $eixo->descricao ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</div>
+					<div class="col-md-3 col-label">
+						<div class=""><?php _e('Selecionar Ator', PDI_TEXT_DOMAIN) ?></div>
+					</div>
+					<div class="form-group col-md-9">
+						<select name="ator" id="ator" class="form-control admin-filter-acoes">
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
+							<?php foreach ($atores as $ator) : ?>
+								<?php if ($ator->active != 0) : ?>
+									<option value="<?php echo $ator->id ?>"><?php echo $ator->descricao ?></option>
 								<?php endif; ?>
 							<?php endforeach; ?>
 						</select>
@@ -82,7 +96,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 					</div>
 					<div class="form-group col-md-10">
 						<select name="indicador_meta" id="indicador-meta" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($indicadores as $indicador) : ?>
 								<?php if ($indicador->active != 0) : ?>
 									<option value="<?php echo $indicador->id ?>" <?php echo ($indicador->id == $acao->indicador_id) ? 'selected="selected"' : '' ?>><?php echo $indicador->id . '. ' . $indicador->titulo ?></option>
@@ -96,7 +110,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 					</div>
 					<div class="form-group col-md-10">
 						<select name="eixo" id="eixo" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($eixos as $eixo) : ?>
 								<?php if ($eixo->active != 0) : ?>
 									<option value="<?php echo $eixo->id ?>" <?php echo ($eixo->id == $acao->eixo_id) ? 'selected="selected"' : '' ?>><?php echo $eixo->descricao ?></option>
@@ -150,7 +164,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 					</div>
 					<div class="form-group col-md-4">
 						<select name="ator_acao" id="ator-acao" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
-							<option value="">Selecione</option>
+							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($atores as $ator) : ?>
 								<?php if ($ator->active != 0) : ?>
 									<option value="<?php echo $ator->id ?>" <?php echo ($ator->id == $acao->ator) ? 'selected="selected"' : '' ?>><?php echo $ator->descricao ?></option>
