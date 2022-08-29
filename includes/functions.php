@@ -1,5 +1,56 @@
 <?php
 defined('ABSPATH') or die('No script kiddies please!');
+
+function pdi_get_logs_all(array $filter = array())
+{
+	return PDI_DB::get_table(TABLE_LOGS, $filter);
+}
+
+function pdi_get_logs_all_query(string $query)
+{
+	return PDI_DB::get_option_query(TABLE_LOGS, $query);
+}
+
+function pdi_get_logs(array $args)
+{
+	return PDI_DB::get_option(TABLE_LOGS, $args);
+}
+
+function pdi_set_logs(array $args, array $format = null)
+{
+	return PDI_DB::set_option(TABLE_LOGS, $args, $format);
+}
+
+function pdi_insert_logs(string $log, string $status, $infos)
+{
+	if (!$log) return false;
+	if (!$status) return false;
+
+	if (is_array($infos) || is_object($infos)) {
+		if (!is_serialized($infos)) {
+			$infos = maybe_serialize($infos);
+		}
+	}
+
+	$args = array(
+		'log'						=> $log,
+		'status'				=> $status,
+		'infos'					=> $infos,
+		'user_id'				=> 1,
+		'created_at'		=> date('Y-m-d H:i:s'),
+	);
+
+	$format = array(
+		'%s',
+		'%s',
+		'%s',
+		'%d',
+		'%s',
+	);
+
+	return pdi_set_logs($args, $format);
+}
+
 function pdi_get_configs_all(array $filter = array())
 {
 	return PDI_DB::get_table(TABLE_CONFIGS, $filter);
@@ -295,6 +346,7 @@ function pdi_get_template_front(string $path, $variaveis = null)
 {
 
 	if (file_exists(PDI_FRONT . $path . '.php')) {
+		$variaveis = $variaveis;
 		include PDI_FRONT . $path . '.php';
 	}
 }

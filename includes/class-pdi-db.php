@@ -25,6 +25,7 @@ class PDI_DB
 	private static $table_notification					= TABLE_NOTIFICATION;
 	private static $table_comments							= TABLE_COMMENTS;
 	private static $table_configs								= TABLE_CONFIGS;
+	private static $table_logs									= TABLE_LOGS;
 
 	/**
 	 * Verifica se a tablela está criada no banco de dados
@@ -43,6 +44,7 @@ class PDI_DB
 
 		return ($select) ? true : false;
 	}
+
 	/**
 	 * Criar tabelas de configurações
 	 */
@@ -69,6 +71,37 @@ class PDI_DB
 		return $create;
 	}
 
+	/**
+	 * Criar tabelas de logs
+	 */
+	public static function create_table_logs()
+	{
+		if (self::check_tables(self::$table_logs)) {
+			return false;
+		}
+
+		global $wpdb;
+		$query = "CREATE TABLE " . self::$prefix_table . self::$table_logs . " (
+			`id` INT AUTO_INCREMENT,
+			`log` LONGTEXT NULL,
+			`status` LONGTEXT NULL,
+			`infos` LONGTEXT NULL,
+			`user_id` INT NULL,
+			`created_at` DATETIME NULL,
+			PRIMARY KEY (`id`),
+			UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+			ENGINE = InnoDB
+			DEFAULT CHARACTER SET = utf8mb4
+			COLLATE = utf8mb4_unicode_ci";
+
+		$create = $wpdb->query(
+			$wpdb->prepare(
+				$query
+			)
+		);
+
+		return $create;
+	}
 
 	/**
 	 * Criar tabela Objetivos no banco de dados
@@ -778,6 +811,8 @@ class PDI_DB
 			$query .= $query_string;
 		}
 
+		// return $query;
+
 		$select = $wpdb->get_results(
 			$wpdb->prepare(
 				$query
@@ -936,5 +971,25 @@ class PDI_DB
 		);
 
 		return $delete;
+	}
+
+	public static function get_option_query(string $table, string $args_query = null)
+	{
+		global $wpdb;
+		$query = "SELECT * FROM " . self::$prefix_table . $table;
+
+		if ($args_query) {
+			$query = $query . ' ' . $args_query;
+		}
+
+		// return $query;
+
+		$select = $wpdb->get_results(
+			$wpdb->prepare(
+				$query
+			)
+		);
+
+		return $select;
 	}
 }

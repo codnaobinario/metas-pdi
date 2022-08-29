@@ -23,6 +23,20 @@ CREATE TABLE `pdi_pne` (\
   PRIMARY KEY (`id`)\
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci\
 
+### `pdi_logs`
+CREATE TABLE `u765224213_unifesp`.`pdi_logs` (
+  `id` INT AUTO_INCREMENT,
+  `log` LONGTEXT NULL,
+  `status` LONGTEXT NULL,
+  `infos` LONGTEXT NULL,
+  `user_id` INT NULL,
+  `created_at` DATETIME NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_unicode_ci;
+
 ## Insert Tables
 ### `ods`
 INSERT INTO pdi_ods (titulo, slug, created_at, img) \

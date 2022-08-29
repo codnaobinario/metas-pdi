@@ -20,7 +20,8 @@ if ($variaveis) {
 				<tr>
 					<td data-gt-id="<?php echo $gt->id ?>">
 						<a href="?page=pdi-grande-tema&edit=<?php echo $gt->id ?>">
-							<?php echo $gt->id . ' - ' . $gt->descricao ?>
+							<?php $gtNumber = $gt->number ? $gt->number : $gt->id ?>
+							<?php echo $gtNumber . ' - ' . $gt->descricao ?>
 						</a>
 					</td>
 					<td class="td-remove">

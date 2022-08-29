@@ -9,7 +9,8 @@ defined('ABSPATH') or die('No script kiddies please!');
 		<?php endif; ?>
 		<div class="pdi-plugin-title">
 			<span class="dashicons dashicons-edit"></span>
-			<?php echo $_GET['edit'] !== 'new' ? $gt[0]->id . ' - ' . $gt[0]->descricao : _e('Novo Grande Tema', PDI_TEXT_DOMAIN) ?>
+			<?php $gtNumber = $gt[0]->number ? $gt[0]->number : $gt[0]->id ?>
+			<?php echo $_GET['edit'] !== 'new' ? $gtNumber . ' - ' . $gt[0]->descricao : _e('Novo Grande Tema', PDI_TEXT_DOMAIN) ?>
 		</div>
 		<form action="" class="form-edit-pdi">
 			<div class="form-row row">
@@ -18,6 +19,12 @@ defined('ABSPATH') or die('No script kiddies please!');
 				</div>
 				<div class="form-group col-md-9">
 					<input type="checkbox" name="active" id="active" class="form-control" <?php echo $gt[0]->active === '1' || !$gt[0]->active ? 'checked' : '' ?> value="1" />
+				</div>
+				<div class="col-md-3 col-label">
+					<?php _e('Número', PDI_TEXT_DOMAIN) ?>
+				</div>
+				<div class="form-group col-md-9">
+					<input type="text" name="number" id="number" class="form-control w-100px" value="<?php echo $gt[0]->number && $gt[0]->number !== 0 ? $gt[0]->number : '' ?>" />
 				</div>
 				<div class="col-md-3 col-label">
 					<?php _e('Descrição', PDI_TEXT_DOMAIN) ?>

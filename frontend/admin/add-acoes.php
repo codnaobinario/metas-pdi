@@ -8,6 +8,11 @@ global $current_user;
 $nivel_1 = in_array('pdi_nivel_1', $current_user->roles);
 $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 $ator_meta = get_user_meta($current_user->id, 'pdi_ator');
+
+if ($_GET['indicador']) {
+	$indicadorId = $_GET['indicador'];
+}
+
 if ($nivel_1) :
 	pdi_get_template_front('admin/no-permission');
 else :
@@ -28,7 +33,9 @@ else :
 							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($indicadores as $indicador) : ?>
 								<?php if ($indicador->active != 0) : ?>
-									<option value="<?php echo $indicador->id ?>"><?php echo $indicador->id . '. ' . $indicador->titulo ?></option>
+									<option value="<?php echo $indicador->id ?>" <?php echo $indicadorId == $indicador->id ? 'selected' : '' ?>>
+										<?php echo $indicador->id . '. ' . $indicador->titulo ?>
+									</option>
 								<?php endif; ?>
 							<?php endforeach; ?>
 						</select>

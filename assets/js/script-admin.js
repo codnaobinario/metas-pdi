@@ -264,6 +264,30 @@
     $(document).on('change', '#image-top', function () {
       enviar_imagem(this);
     });
+
+    /**
+     * Logs
+     */
+    $(document).on('click', '.btn-search-logs', function () {
+      pdi.logs.search();
+    }).on('click', '.btn-search-logs-user', function () {
+      pdi.logs.searchUser();
+    });
+
+    $(document).on('click', '#myTab button', function (event) {
+      event.preventDefault();
+      $(this).tab('show');
+    });
+
+    var triggerTabList = [].slice.call(document.querySelectorAll('#myTab button'));
+    triggerTabList.forEach(function (triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl);
+
+      triggerEl.addEventListener('click', function (event) {
+        event.preventDefault();
+        tabTrigger.show();
+      });
+    });
   });
 
   function enviar_imagem(input) {

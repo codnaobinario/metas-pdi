@@ -45,32 +45,41 @@ if (!$variaveis) {
 				<div class="card-top-left">
 					<a href="<?php echo site_url('/detalhes-meta/?indicador_id=' . $indicador->id) ?>">
 						<div class="bar" style="background-color: <?php echo $colors[1] ?>"></div>
-						<div class="meta">META</div>
+						<div class="meta">
+							<?php _e('Indicador', PDI_TEXT_DOMAIN) ?>
+						</div>
 						<div class="id"><?php echo $indicador->number ? $indicador->number : $indicador->id ?></div>
 					</a>
 				</div>
 				<div class="card-top-center">
 					<div class="card-label-top">
-						Grande Tema Estratégico
+						<?php _e('Grande Tema Estratégico', PDI_TEXT_DOMAIN) ?>
 					</div>
 					<div class="card-label-botton">
-						<?php printf('%s. %s', $indicador->grande_tema[0]->id, $indicador->grande_tema[0]->descricao) ?>
+						<?php $number = $indicador->grande_tema[0]->number && $indicador->grande_tema[0]->number != 0 ? $indicador->grande_tema[0]->number : null;  ?>
+						<?php $gtNumber = $number ? $number : $indicador->grande_tema[0]->id ?>
+						<?php printf('%s. %s', $gtNumber, $indicador->grande_tema[0]->descricao) ?>
 					</div>
 					<div class="card-label-top">
-						Objetivo Ouse
+						<?php _e('Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
+
 					</div>
 					<div class="card-label-botton">
-						<?php printf('%s. %s', $indicador->objetivo_ouse[0]->id, $indicador->objetivo_ouse[0]->descricao) ?>
+						<?php $number = $indicador->objetivo_ouse[0]->number && $indicador->objetivo_ouse[0]->number != 0 ? $indicador->objetivo_ouse[0]->number : null;  ?>
+						<?php $ouseNumber = $number ? $number : $indicador->objetivo_ouse[0]->id ?>
+						<?php printf('%s. %s', $ouseNumber, $indicador->objetivo_ouse[0]->descricao) ?>
 					</div>
 				</div>
 				<div class="card-top-right">
 					<a href="<?php echo site_url('/detalhes-meta/?indicador_id=' . $indicador->id) ?>" class="btn btn-actions-indicadores">
 						<i class="fas fa-chart-pie"></i>
-						Detalhes desta meta
+						<?php _e('Detalhes desta meta', PDI_TEXT_DOMAIN) ?>
+
 					</a>
 					<button type="button" class="btn btn-actions-indicadores btn-add-notification" data-indicador-id="<?php echo $indicador->id ?>">
 						<i class="fas fa-bell"></i>
-						Receber notificações
+						<?php _e('Receber notificações', PDI_TEXT_DOMAIN) ?>
+
 					</button>
 				</div>
 			</div>
@@ -201,10 +210,17 @@ if (!$variaveis) {
 <?php endforeach; ?>
 <div class="pdi-pagination pagination-front">
 	<button type="button" class="btn pdi-pagination-prev" data-page="<?php echo $page - 1 ?>" <?php echo ($page <= 1) ? 'disabled' : '' ?>>Anterior</button>
-	<?php for ($i = 0; $i < $pagnation; $i++) : ?>
+	<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="1" <?php echo (1 == $page) ? 'disabled' : '' ?>>
+		<?php echo $i + 1 ?>
+	</button>
+	<?php for ($i = 1; $i < ($pagnation - 1); $i++) : ?>
+		<?php if ($page) ?>
 		<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $i + 1 ?>" <?php echo ($i + 1 == $page) ? 'disabled' : '' ?>>
 			<?php echo $i + 1 ?>
 		</button>
 	<?php endfor; ?>
+	<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $pagnation ?>" <?php echo ($pagnation == $page) ? 'disabled' : '' ?>>
+		<?php echo $i + 1 ?>
+	</button>
 	<button type="button" class="btn pdi-pagination-next" data-page="<?php echo $page + 1 ?>" <?php echo ($page >= $pagnation) ? 'disabled' : '' ?>>Próximo</button>
 </div>

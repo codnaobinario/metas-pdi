@@ -627,6 +627,45 @@ var pdi = {
       });
     },
   },
+  logs: {
+    search: function () {
+      const inputSearch = jQuery('#search-logs').val();
+      const table = jQuery('#load-table-logs');
+
+      this.ajax('search', 'pdi_logs_search', table, inputSearch);
+    },
+    searchUser: function () {
+      const inputSearch = jQuery('#search-user').val();
+      const table = jQuery('#load-table-logs');
+
+      this.ajax('search', 'pdi_logs_search_user', table, inputSearch);
+    },
+    ajax: function (type, action, table, value) {
+      var data = {};
+
+      data = {
+        action: action,
+        search: value,
+      };
+
+      jQuery.ajax({
+        type: "POST",
+        url: pdi_options_object.ajaxurl,
+        data: data,
+        dataType: "json",
+        beforeSend: function () {
+          loadBlock.add(table);
+        },
+        complete: function () {
+          loadBlock.remove();
+        },
+        success: function (response) {
+          // console.log(response);
+          if (response.html) table.html(response.html);
+        },
+      });
+    },
+  }
 };
 
 var usersPermission = {

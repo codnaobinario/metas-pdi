@@ -123,6 +123,15 @@ class PDI_Menu_Admin
 			'pdi-configs',
 			array($this, 'pdi_submenu_page_configs')
 		);
+
+		add_submenu_page(
+			'pdi',
+			'Logs Auditoria',
+			'Logs Auditoria',
+			'manage_options',
+			'pdi-logs',
+			array($this, 'pdi_submenu_page_logs')
+		);
 	}
 
 	public function pdi_menu_page()
@@ -259,6 +268,15 @@ class PDI_Menu_Admin
 		}
 
 		pdi_get_template_front('admin/atores');
+	}
+
+	public function pdi_submenu_page_logs()
+	{
+		if (!current_user_can('manage_options')) {
+			wp_die(__('You do not have sufficient permissions to access this page.', PDI_TEXT_DOMAIN));
+		}
+
+		pdi_get_template_front('admin/logs');
 	}
 }
 
