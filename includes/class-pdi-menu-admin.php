@@ -90,6 +90,15 @@ class PDI_Menu_Admin
 
 		add_submenu_page(
 			'pdi',
+			'Atores',
+			'Atores',
+			'manage_options',
+			'pdi-ator',
+			array($this, 'pdi_submenu_page_ator')
+		);
+
+		add_submenu_page(
+			'pdi',
 			'Permissoes de Usuários',
 			'Permissões de Usuários',
 			'manage_options',
@@ -113,6 +122,15 @@ class PDI_Menu_Admin
 			'manage_options',
 			'pdi-configs',
 			array($this, 'pdi_submenu_page_configs')
+		);
+
+		add_submenu_page(
+			'pdi',
+			'Logs Auditoria',
+			'Logs Auditoria',
+			'manage_options',
+			'pdi-logs',
+			array($this, 'pdi_submenu_page_logs')
 		);
 	}
 
@@ -239,8 +257,26 @@ class PDI_Menu_Admin
 		if (!current_user_can('manage_options')) {
 			wp_die(__('You do not have sufficient permissions to access this page.', PDI_TEXT_DOMAIN));
 		}
-		
+
 		pdi_get_template_front('admin/configs');
+	}
+
+	public function pdi_submenu_page_ator()
+	{
+		if (!current_user_can('manage_options')) {
+			wp_die(__('You do not have sufficient permissions to access this page.', PDI_TEXT_DOMAIN));
+		}
+
+		pdi_get_template_front('admin/atores');
+	}
+
+	public function pdi_submenu_page_logs()
+	{
+		if (!current_user_can('manage_options')) {
+			wp_die(__('You do not have sufficient permissions to access this page.', PDI_TEXT_DOMAIN));
+		}
+
+		pdi_get_template_front('admin/logs');
 	}
 }
 

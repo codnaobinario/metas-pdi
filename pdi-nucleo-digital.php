@@ -40,6 +40,7 @@ define('TABLE_OBJETIVO_ESPECIFICO', 'objetivo_especifico');
 define('TABLE_NOTIFICATION', 'notification');
 define('TABLE_COMMENTS', 'comments');
 define('TABLE_CONFIGS', 'configs');
+define('TABLE_LOGS', 'logs');
 define('EMAIL_PDI', 'portalpdi@unifesp.br');
 
 include_once dirname(__FILE__) . '/inc/xlsxwriter.class.php';
@@ -70,6 +71,7 @@ add_action('admin_notices', 'author_admin_notice'); */
 function pdi_initialize_activation_plugin()
 {
 	PDI_DB::create_table_configs();
+	PDI_DB::create_table_logs();
 	PDI_DB::create_table_acoes();
 	PDI_DB::create_table_eixo();
 	PDI_DB::create_table_grande_tema();
@@ -152,7 +154,7 @@ function pdi_init_admin()
 		$localize['get'] = $_GET;
 	}
 
-	//wp_enqueue_script('pdi_script_bootstrap_admin', plugins_url('assets/js/bootstrap.min.js', __FILE__), array());
+	wp_enqueue_script('pdi_script_bootstrap_admin', plugins_url('assets/js/bootstrap.min.js', __FILE__), array());
 	wp_enqueue_script('pdi_script_mask', plugins_url('assets/js/jquery.mask.min.js', __FILE__), array('jquery'));
 	wp_enqueue_script('pdi_script_toastr', plugins_url('assets/js/toastr.min.js', __FILE__), array('jquery'));
 	wp_enqueue_script('pdi_script_function_admin', plugins_url('assets/js/functions-admin.js', __FILE__), array('jquery'));

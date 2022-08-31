@@ -10,7 +10,8 @@ $grande_tema = pdi_get_grande_tema_all();
 		<?php endif; ?>
 		<div class="pdi-plugin-title">
 			<span class="dashicons dashicons-edit"></span>
-			<?php echo $_GET['edit'] !== 'new' ? $objOuse[0]->id . ' - ' . $objOuse[0]->descricao : _e('Novo Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
+			<?php $idObjetivo = $objOuse[0]->number ? $objOuse[0]->number : $objOuse[0]->id ?>
+			<?php echo $_GET['edit'] !== 'new' ? $idObjetivo . ' - ' . $objOuse[0]->descricao : _e('Novo Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
 		</div>
 		<form action="" class="form-edit-pdi">
 			<div class="form-row row">
@@ -19,6 +20,12 @@ $grande_tema = pdi_get_grande_tema_all();
 				</div>
 				<div class="form-group col-md-9">
 					<input type="checkbox" name="active" id="active" class="form-control" <?php echo $objOuse[0]->active === '1' || !$objOuse[0]->active ? 'checked' : '' ?> value="1" />
+				</div>
+				<div class="col-md-3 col-label">
+					<?php _e('Número', PDI_TEXT_DOMAIN) ?>
+				</div>
+				<div class="form-group col-md-9">
+					<input type="text" name="number" id="number" class="form-control w-100px" value="<?php echo $objOuse[0]->number && $objOuse[0]->number !== 0 ? $objOuse[0]->number : '' ?>" />
 				</div>
 				<div class="col-md-3 col-label">
 					<?php _e('Descrição', PDI_TEXT_DOMAIN) ?>

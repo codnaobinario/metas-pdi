@@ -1,18 +1,73 @@
 <?php
 defined('ABSPATH') or die('No script kiddies please!');
-function pdi_get_configs_all(array $filter = array()) {
+
+function pdi_get_logs_all(array $filter = array())
+{
+	return PDI_DB::get_table(TABLE_LOGS, $filter);
+}
+
+function pdi_get_logs_all_query(string $query)
+{
+	return PDI_DB::get_option_query(TABLE_LOGS, $query);
+}
+
+function pdi_get_logs(array $args)
+{
+	return PDI_DB::get_option(TABLE_LOGS, $args);
+}
+
+function pdi_set_logs(array $args, array $format = null)
+{
+	return PDI_DB::set_option(TABLE_LOGS, $args, $format);
+}
+
+function pdi_insert_logs(string $log, string $status, $infos)
+{
+	if (!$log) return false;
+	if (!$status) return false;
+
+	if (is_array($infos) || is_object($infos)) {
+		if (!is_serialized($infos)) {
+			$infos = maybe_serialize($infos);
+		}
+	}
+
+	$args = array(
+		'log'						=> $log,
+		'status'				=> $status,
+		'infos'					=> $infos,
+		'user_id'				=> 1,
+		'created_at'		=> date('Y-m-d H:i:s'),
+	);
+
+	$format = array(
+		'%s',
+		'%s',
+		'%s',
+		'%d',
+		'%s',
+	);
+
+	return pdi_set_logs($args, $format);
+}
+
+function pdi_get_configs_all(array $filter = array())
+{
 	return PDI_DB::get_table(TABLE_CONFIGS, $filter);
 }
 
-function pdi_get_configs(array $args) {
+function pdi_get_configs(array $args)
+{
 	return PDI_DB::get_option(TABLE_CONFIGS, $args);
 }
 
-function pdi_set_configs(array $args, array $format = null) {
+function pdi_set_configs(array $args, array $format = null)
+{
 	return PDI_DB::set_option(TABLE_CONFIGS, $args, $format);
 }
 
-function pdi_update_configs(array $args, array $where = null, array $format = null, array $where_format = null) {
+function pdi_update_configs(array $args, array $where = null, array $format = null, array $where_format = null)
+{
 	return PDI_DB::update_option(TABLE_CONFIGS, $args, $where, $format, $where_format);
 }
 
@@ -81,9 +136,9 @@ function pdi_delete_objetivos_ouse(array $args, array $format = null)
 	return PDI_DB::delete_option(TABLE_OBJETIVOS_OUSE, $args, $format);
 }
 
-function pdi_get_indicadores_all(array $filter = array(), int $per_page = null, int $page = 1, string $order = null, string $orderby = 'ASC')
+function pdi_get_indicadores_all(array $filter = array(), int $per_page = null, int $page = 1, string $order = null, string $orderby = 'ASC', string $query_string = null)
 {
-	return PDI_DB::get_table(TABLE_INDICADORES, $filter, $per_page, $page, $order, $orderby);
+	return PDI_DB::get_table(TABLE_INDICADORES, $filter, $per_page, $page, $order, $orderby, $query_string);
 }
 
 function pdi_count_indicadores_all(array $filter = array())
@@ -226,6 +281,11 @@ function pdi_update_atores(array $args, array $where, array $format = null, arra
 	return PDI_DB::update_option(TABLE_ATORES, $args, $where, $format, $where_format);
 }
 
+function pdi_delete_atores(array $args, array $format = null)
+{
+	return PDI_DB::delete_option(TABLE_ATORES, $args, $format);
+}
+
 function pdi_get_objetivo_especifico_all(array $filter = array())
 {
 	return PDI_DB::get_table(TABLE_OBJETIVO_ESPECIFICO, $filter);
@@ -286,6 +346,7 @@ function pdi_get_template_front(string $path, $variaveis = null)
 {
 
 	if (file_exists(PDI_FRONT . $path . '.php')) {
+		$variaveis = $variaveis;
 		include PDI_FRONT . $path . '.php';
 	}
 }
@@ -425,12 +486,12 @@ function calc_porcent_meta($vlrInicial, $vlrAtual)
 	}
 }
 
-function calc_valores_indicares_linha($valorInicial, $valorFinal, $valorAtual){
+function calc_valores_indicares_linha($valorInicial, $valorFinal, $valorAtual)
+{
 	$vlr1 = $valorFinal;
 	$vlr2 = $vlr1 / 100;
 	$vlr3 = $valorAtual / $vlr2;
 	return number_format($vlr3 / 100, 2);
-
 }
 
 function calcular_porcentagem_acoes_concluidas($acoes)
@@ -584,10 +645,10 @@ function msg_email_update_metas($indicador, $notification)
 							</tr>
 							<tr>
 								<td style="border: none; text-align: center; color: <?php echo $color[1] ?>; font-size: 1.5rem; font-weight: 600;">
-								<p>Olá, <?php $notification->nome ?></p>
-								<p>A Meta <?php echo $indicador[0]->id ?> foi atualizada!</p>
-								
-							</td>
+									<p>Olá, <?php $notification->nome ?></p>
+									<p>A Meta <?php echo $indicador[0]->id ?> foi atualizada!</p>
+
+								</td>
 							</tr>
 							<tr style="text-align: center;">
 								<td style="border: none;">
@@ -623,22 +684,22 @@ function msg_email_update_metas($indicador, $notification)
 										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/facebook-f-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://twitter.com/unifesp" target="_blank" rel="noopener noreferrer" title="Twitter Oficial" aria-label="Twitter Oficial">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/twitter-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/twitter-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://www.instagram.com/unifespoficial/" target="_blank" rel="noopener noreferrer" title="Instagram Unifesp" aria-label="Instagram Unifesp">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/instagram-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/instagram-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://www.youtube.com/channel/UCFVLZWcWoAHJVfc6CsXzqbw" target="_blank" rel="noopener noreferrer" title="Youtube Unifesp" aria-label="Youtube Unifesp">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/youtube-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/youtube-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://pt.linkedin.com/school/unifesp/" target="_blank" rel="noopener noreferrer" title="Linkedin Unifesp" aria-label="Linkedin Unifesp">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/linkedin-in-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/linkedin-in-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://medium.com/@unifesp" target="_blank" rel="noopener noreferrer" title="Medium Unifesp" aria-label="Medium Unifesp">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/medium-m-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/medium-m-brands.png' ?>" alt="">
 									</a>
 									<a style="color: #fff; padding: 5px; vertical-align: text-top; text-decoration: none;" href="https://www.flickr.com/photos/158442049@N04/albums" target="_blank" rel="noopener noreferrer" title="Flickr Unifesp" aria-label="Flickr Unifesp">
-										<img style="height: 20px;"  src="<?php echo PDI_IMAGES . '/social/flickr-brands.png' ?>" alt="">
+										<img style="height: 20px;" src="<?php echo PDI_IMAGES . '/social/flickr-brands.png' ?>" alt="">
 										</svg>
 									</a>
 								</td>

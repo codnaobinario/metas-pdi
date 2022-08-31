@@ -25,6 +25,7 @@ class PDI_DB
 	private static $table_notification					= TABLE_NOTIFICATION;
 	private static $table_comments							= TABLE_COMMENTS;
 	private static $table_configs								= TABLE_CONFIGS;
+	private static $table_logs									= TABLE_LOGS;
 
 	/**
 	 * Verifica se a tablela está criada no banco de dados
@@ -43,6 +44,7 @@ class PDI_DB
 
 		return ($select) ? true : false;
 	}
+
 	/**
 	 * Criar tabelas de configurações
 	 */
@@ -69,6 +71,37 @@ class PDI_DB
 		return $create;
 	}
 
+	/**
+	 * Criar tabelas de logs
+	 */
+	public static function create_table_logs()
+	{
+		if (self::check_tables(self::$table_logs)) {
+			return false;
+		}
+
+		global $wpdb;
+		$query = "CREATE TABLE " . self::$prefix_table . self::$table_logs . " (
+			`id` INT AUTO_INCREMENT,
+			`log` LONGTEXT NULL,
+			`status` LONGTEXT NULL,
+			`infos` LONGTEXT NULL,
+			`user_id` INT NULL,
+			`created_at` DATETIME NULL,
+			PRIMARY KEY (`id`),
+			UNIQUE INDEX `id_UNIQUE` (`id` ASC) VISIBLE)
+			ENGINE = InnoDB
+			DEFAULT CHARACTER SET = utf8mb4
+			COLLATE = utf8mb4_unicode_ci";
+
+		$create = $wpdb->query(
+			$wpdb->prepare(
+				$query
+			)
+		);
+
+		return $create;
+	}
 
 	/**
 	 * Criar tabela Objetivos no banco de dados
@@ -203,6 +236,7 @@ class PDI_DB
 		global $wpdb;
 		$query = "CREATE TABLE " . self::$prefix_table . self::$table_indicadores . " ( "
 			. "id bigint unsigned NOT NULL AUTO_INCREMENT,  "
+			. "number int(10) DEFAULT NULL,  "
 			. "grande_tema_id bigint NOT NULL,  "
 			. "objetivo_ouse_id bigint NOT NULL,  "
 			. "titulo varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,  "
@@ -210,7 +244,9 @@ class PDI_DB
 			. "ods longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,  "
 			. "pne longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,  "
 			. "valor_meta decimal(15, 2) DEFAULT NULL,  "
+			. "justif_valor_meta longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,"
 			. "valor_inicial decimal(15, 2) DEFAULT NULL,  "
+			. "justif_valor_inicial longtext COLLATE utf8mb4_unicode_ci DEFAULT NULL,"
 			. "data_registro date NOT NULL,  "
 			. "active tinyint(1) DEFAULT '1',  "
 			. "created_at timestamp NULL DEFAULT NULL,  "
@@ -307,6 +343,7 @@ class PDI_DB
 			. "percentual_cumprido decimal(15, 2) NOT NULL,  "
 			. "data_registro date NOT NULL,  "
 			. "ano_acao int(11) NOT NULL,  "
+			. "prazo_execucao varchar(255) NOT NULL,  "
 			. "user_id int(11) DEFAULT NULL,  "
 			. "active tinyint(1) DEFAULT '1',  "
 			. "created_at timestamp NULL DEFAULT NULL,  "
@@ -725,7 +762,7 @@ class PDI_DB
 	 * @param string $table (Nome da tabela a ser buscada)
 	 * @return object
 	 */
-	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC')
+	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC', string $query_string = null)
 	{
 		global $wpdb;
 		$query = "SELECT * FROM " . self::$prefix_table . $table;
@@ -769,6 +806,12 @@ class PDI_DB
 			$offset = ($per_page * ($page - 1));
 			$query .= " LIMIT {$per_page} OFFSET {$offset}";
 		}
+
+		if ($query_string) {
+			$query .= $query_string;
+		}
+
+		// return $query;
 
 		$select = $wpdb->get_results(
 			$wpdb->prepare(
@@ -928,5 +971,25 @@ class PDI_DB
 		);
 
 		return $delete;
+	}
+
+	public static function get_option_query(string $table, string $args_query = null)
+	{
+		global $wpdb;
+		$query = "SELECT * FROM " . self::$prefix_table . $table;
+
+		if ($args_query) {
+			$query = $query . ' ' . $args_query;
+		}
+
+		// return $query;
+
+		$select = $wpdb->get_results(
+			$wpdb->prepare(
+				$query
+			)
+		);
+
+		return $select;
 	}
 }

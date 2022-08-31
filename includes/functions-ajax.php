@@ -48,6 +48,7 @@ function pdi_save_new_acao()
 		'percentual_cumprido' => convert_real_float($args->percentual_cumprido),
 		'data_registro' => convert_data_db($args->data_registro),
 		'ano_acao' => intval($args->ano_acao),
+		'prazo_execucao' => $args->prazo_execucao,
 		'justificativa' => $args->justificativa_acao,
 		'user_id' => get_current_user_id(),
 		'created_at' => date('Y-m-d H:i:s'),
@@ -64,12 +65,19 @@ function pdi_save_new_acao()
 		'%s',
 		'%d',
 		'%s',
+		'%s',
 		'%d',
 		'%s',
 		'%s',
 	];
 
 	$insertAcao = pdi_set_acoes($acao, $format);
+
+	pdi_insert_logs(
+		'Ação "' . $args->desc_acao . '" inserida',
+		'insert',
+		$args
+	);
 
 	wp_send_json(
 		array(
@@ -127,6 +135,7 @@ function pdi_update_acao()
 		'percentual_cumprido' => convert_real_float($args->percentual_cumprido),
 		'data_registro' => convert_data_db($args->data_registro),
 		'ano_acao' => intval($args->ano_acao),
+		'prazo_execucao' => $args->prazo_execucao,
 		'justificativa' => $args->justificativa_acao,
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
@@ -142,6 +151,7 @@ function pdi_update_acao()
 		'%d',
 		'%s',
 		'%s',
+		'%s',
 	];
 
 	$where = ['id' => intval($args->id)];
@@ -149,6 +159,12 @@ function pdi_update_acao()
 
 	$updateAcao = pdi_update_acoes($acao, $where, $format, $where_format);
 	pdi_update_metas_email($args->indicador_meta);
+
+	pdi_insert_logs(
+		'Ação "' . $args->desc_acao . '" atualizada',
+		'update',
+		$args
+	);
 
 	wp_send_json(
 		array(
@@ -175,6 +191,7 @@ function pdi_save_meta()
 	$args = (object) $args;
 
 	$indicador = [
+		'number' => intval($args->number),
 		'grande_tema_id' => intval($args->grande_tema),
 		'objetivo_ouse_id' => intval($args->objetivo_ouse),
 		'titulo' => $args->indicador,
@@ -182,7 +199,9 @@ function pdi_save_meta()
 		'ods' => json_encode($args->ods),
 		'pne' => json_encode($args->pne),
 		'valor_meta' => convert_real_float($args->valor_meta),
+		'justif_valor_meta' => $args->justif_valor_meta,
 		'valor_inicial' => convert_real_float($args->valor_inicial_meta),
+		'justif_valor_inicial' => $args->justif_valor_inicial,
 		'data_registro' => convert_data_db($args->data_registro_meta),
 		'created_at' => date('Y-m-d H:i:s'),
 		'updated_at' => date('Y-m-d H:i:s'),
@@ -191,12 +210,15 @@ function pdi_save_meta()
 	$format = [
 		'%d',
 		'%d',
+		'%d',
 		'%s',
 		'%s',
 		'%s',
 		'%s',
 		'%f',
+		'%s',
 		'%f',
+		'%s',
 		'%s',
 		'%s',
 		'%s',
@@ -236,6 +258,12 @@ function pdi_save_meta()
 		}
 	}
 
+	pdi_insert_logs(
+		'Meta "' . $args->desc_meta . '" adicionada',
+		'insert',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -259,6 +287,7 @@ function pdi_update_meta()
 	$args = (object) $args;
 
 	$indicador = [
+		'number' => intval($args->number),
 		'grande_tema_id' => intval($args->grande_tema),
 		'objetivo_ouse_id' => intval($args->objetivo_ouse),
 		'titulo' => $args->indicador,
@@ -266,7 +295,9 @@ function pdi_update_meta()
 		'ods' => json_encode($args->ods),
 		'pne' => json_encode($args->pne),
 		'valor_meta' => convert_real_float($args->valor_meta),
+		'justif_valor_meta' => $args->justif_valor_meta,
 		'valor_inicial' => convert_real_float($args->valor_inicial_meta),
+		'justif_valor_inicial' => $args->justif_valor_inicial,
 		'data_registro' => convert_data_db($args->data_registro_meta),
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
@@ -274,12 +305,15 @@ function pdi_update_meta()
 	$format = [
 		'%d',
 		'%d',
+		'%d',
 		'%s',
 		'%s',
 		'%s',
 		'%s',
 		'%f',
+		'%s',
 		'%f',
+		'%s',
 		'%s',
 		'%s',
 	];
@@ -334,6 +368,12 @@ function pdi_update_meta()
 		pdi_delete_indicadores_anos(['id' => $remove_ano_id]);
 	}
 
+	pdi_insert_logs(
+		'Meta "' . $args->desc_meta . '" atualizada',
+		'update',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -365,7 +405,7 @@ function pdi_filter_acao()
 		. " INNER JOIN " . PREFIXO_TABLE . TABLE_INDICADORES
 		. " ON " . PREFIXO_TABLE . TABLE_INDICADORES . ".id = " . PREFIXO_TABLE . TABLE_ACOES . ".indicador_id";
 
-	if ($args->eixo_estruturante || $args->grande_tema || $args->objetivo_ouse) {
+	if ($args->eixo_estruturante || $args->grande_tema || $args->objetivo_ouse || $args->ator) {
 		$where = " WHERE ";
 		if ($args->eixo_estruturante) {
 			$where .= PREFIXO_TABLE . TABLE_ACOES . ".eixo_id = " . $args->eixo_estruturante . " AND ";
@@ -375,6 +415,9 @@ function pdi_filter_acao()
 		}
 		if ($args->objetivo_ouse) {
 			$where .= PREFIXO_TABLE . TABLE_INDICADORES . ".objetivo_ouse_id = " . $args->objetivo_ouse . " AND ";
+		}
+		if ($args->ator) {
+			$where .= PREFIXO_TABLE . TABLE_ACOES . ".ator = " . $args->ator . " AND ";
 		}
 		$where = rtrim($where, ' AND ');
 
@@ -418,8 +461,17 @@ function pdi_filter_metas()
 	$filter = [];
 	if ($args->grande_tema) $filter['grande_tema_id'] = intval($args->grande_tema);
 	if ($args->objetivo_ouse) $filter['objetivo_ouse_id'] = intval($args->objetivo_ouse);
+	if ($args->number) {
+		// if (!$filter) {
+		// 	$query_string = ' WHERE ' . PREFIXO_TABLE . TABLE_INDICADORES . '.number = ' . $args->number . ' OR ' . PREFIXO_TABLE . TABLE_INDICADORES . '.id = ' . $args->number;
+		// } else {
+		// 	$query_string = ' AND (' . PREFIXO_TABLE . TABLE_INDICADORES . '.number = ' . $args->number . ' OR ' . PREFIXO_TABLE . TABLE_INDICADORES . '.id = ' . $args->number . ' )';
+		// }
+		$filter['number'] = intval($args->number);
+		// $filter['id'] = intval($args->number);
+	}
 
-	$select = pdi_get_indicadores_all($filter);
+	$select = pdi_get_indicadores_all($filter, null, 1, null, 'ASC', $query_string);
 
 	if (!$select) $select['error'] = 'Nenhum registro escontrado';
 	ob_start();
@@ -430,7 +482,7 @@ function pdi_filter_metas()
 		array(
 			'status' => true,
 			'indicador' => $select,
-			'html' => $html
+			'html' => $html,
 		)
 	);
 	exit;
@@ -743,6 +795,12 @@ function pdi_add_users_permission()
 
 	$update = update_user_meta(intval($args->user), 'pdi_ator', $args->user_group);
 
+	pdi_insert_logs(
+		'Adicionado permissão ao usuário ' . $args->user,
+		'insert',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => 'success',
@@ -759,6 +817,13 @@ function pdi_remove_users_permission()
 {
 	$user_id = filter_input(INPUT_POST, 'user_id', FILTER_SANITIZE_STRING);
 	$delete = delete_user_meta(intval($user_id), 'pdi_ator');
+
+	pdi_insert_logs(
+		'Removido premissão de usuário "' . $user_id,
+		'remove',
+		$user_id
+	);
+
 	wp_send_json(
 		array(
 			'status' => 'success',
@@ -932,6 +997,12 @@ function pdi_indicador_edit_active()
 	pdi_get_template_front('admin/table-metas', $select);
 	$html = ob_get_clean();
 
+	pdi_insert_logs(
+		'Indicador "' . $indicador_id . '" ativado',
+		'update',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -965,6 +1036,12 @@ function pdi_remove_indicador()
 	ob_start();
 	pdi_get_template_front('admin/table-metas', $select);
 	$html = ob_get_clean();
+
+	pdi_insert_logs(
+		'Indicador "' . $indicador_id . '" removido.',
+		'update',
+		$args
+	);
 
 	wp_send_json(
 		array(
@@ -1030,6 +1107,12 @@ function pdi_acao_edit_active()
 	pdi_get_template_front('admin/table-acoes', $select);
 	$html = ob_get_clean();
 
+	pdi_insert_logs(
+		'Ação ativada "' . $acao_id . '" inserido',
+		'active',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -1085,6 +1168,12 @@ function pdi_remove_acao()
 	pdi_get_template_front('admin/table-acoes', $select);
 	$html = ob_get_clean();
 
+	pdi_insert_logs(
+		'Ação "' . $acao_id . '" removida',
+		'remove',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -1116,7 +1205,9 @@ function pdi_export_metas()
 		'ODS' => 'string',
 		'PNE' => 'string',
 		'META_INDICADOR' => 'string',
+		'JUSTIFICATIVA_META' => 'string',
 		'META_INICIAL' => 'string',
+		'JUSTIFICATIVA_META_INICIAL' => 'string',
 		'DATA REGISTRO' => 'string',
 		'ANO_INDICADOR' => 'string',
 		'META_ANUAL_INDICADOR' => 'string',
@@ -1171,7 +1262,9 @@ function pdi_export_metas()
 			$ods__,
 			$pne__,
 			format_real($meta->valor_meta),
+			$meta->justif_valor_meta,
 			format_real($meta->valor_inicial),
+			$meta->justif_valor_inicial,
 			convert_data_front($meta->data_registro),
 			$anoIndicador,
 			$metaAnualIndicador,
@@ -1183,6 +1276,12 @@ function pdi_export_metas()
 		$data[$i] = $dados;
 		$i++;
 	}
+
+	pdi_insert_logs(
+		'Metas exportadas',
+		'export',
+		$data
+	);
 
 	// # call the class and generate the excel file from the $data
 	$writer = new XLSXWriter();
@@ -1228,6 +1327,7 @@ function pdi_export_acoes()
 		'ATOR_ENVOLVIDO' => 'string',
 		'DESC_ACAO' => 'string',
 		'ANO_ACAO' => 'integer',
+		'PRAZO_EXECUCAO' => 'string',
 		'PERCENTUAL_CUMPRIDO' => 'string',
 		'DATA_REGISTRO' => 'string',
 		'JUSTIFICATIVA_PLANO' => 'string',
@@ -1251,6 +1351,7 @@ function pdi_export_acoes()
 			$acoes->atores[0]->descricao,
 			$acoes->descricao_acao,
 			$acoes->ano_acao,
+			$acoes->prazo_execucao,
 			format_real($acoes->percentual_cumprido),
 			convert_data_front($acoes->data_registro),
 			$acoes->justificativa
@@ -1259,6 +1360,12 @@ function pdi_export_acoes()
 		$data[$i] = $dados;
 		$i++;
 	}
+
+	pdi_insert_logs(
+		'Ações exportadas',
+		'export',
+		$data
+	);
 
 	// # call the class and generate the excel file from the $data
 	$writer = new XLSXWriter();
@@ -1298,12 +1405,14 @@ function pdi_grande_tema_update()
 	$layout = json_encode([$args->color_primary, $args->color_secondary]);
 
 	$dados = [
+		"number" => $args->number,
 		"descricao" => $args->descricao,
 		"layout" => $layout,
 		"active" => intval($args->active),
 		"updated_at" => date('Y-m-d H:i:s'),
 	];
 	$format = [
+		"%d",
 		"%s",
 		"%s",
 		"%d",
@@ -1325,6 +1434,12 @@ function pdi_grande_tema_update()
 		exit;
 	}
 
+	pdi_insert_logs(
+		'Grande Tema "' . $args->descricao . '" atualizado',
+		'update',
+		$dados
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -1345,6 +1460,7 @@ function pdi_grande_tema_save()
 	$layout = json_encode([$args->color_primary, $args->color_secondary]);
 
 	$dados = [
+		'number' => $args->number,
 		'descricao' => $args->descricao,
 		'layout' => $layout,
 		'active' => intval($args->active),
@@ -1352,6 +1468,7 @@ function pdi_grande_tema_save()
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
 	$format = [
+		'%d',
 		'%s',
 		'%s',
 		'%d',
@@ -1370,6 +1487,12 @@ function pdi_grande_tema_save()
 		);
 		exit;
 	}
+
+	pdi_insert_logs(
+		'Grande Tema "' . $args->descricao . '" inserido',
+		'insert',
+		$dados
+	);
 
 	wp_send_json(
 		array(
@@ -1398,6 +1521,13 @@ function pdi_grande_tema_remove()
 	if (!$remove) {
 		$status = false;
 	}
+
+	pdi_insert_logs(
+		'Grande Tema "' . $grandeTemaId . '" removido',
+		'remove',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => $status,
@@ -1417,12 +1547,14 @@ function pdi_objetivo_ouse_update()
 	$args = (object) $args;
 
 	$dados = [
-		"descricao" => $args->descricao,
-		'grande_tema_id' => intval($args->grande_tema),
-		"active" => intval($args->active),
-		"updated_at" => date('Y-m-d H:i:s'),
+		'number'					=> $args->number,
+		"descricao" 			=> $args->descricao,
+		'grande_tema_id' 	=> intval($args->grande_tema),
+		"active" 					=> intval($args->active),
+		"updated_at" 			=> date('Y-m-d H:i:s'),
 	];
 	$format = [
+		"%d",
 		"%s",
 		"%d",
 		"%d",
@@ -1445,6 +1577,12 @@ function pdi_objetivo_ouse_update()
 		exit;
 	}
 
+	pdi_insert_logs(
+		'Objetivo Ouse "' . $args->descricao . '" atualizado',
+		'update',
+		$dados
+	);
+
 	wp_send_json(
 		array(
 			'status' => true,
@@ -1463,6 +1601,7 @@ function pdi_objetivo_ouse_save()
 	$args = (object) $args;
 
 	$dados = [
+		'number'					=> $args->number,
 		'descricao' => $args->descricao,
 		'grande_tema_id' => intval($args->grande_tema),
 		'active' => intval($args->active),
@@ -1470,6 +1609,7 @@ function pdi_objetivo_ouse_save()
 		'updated_at' => date('Y-m-d H:i:s'),
 	];
 	$format = [
+		'%d',
 		'%s',
 		'%d',
 		'%d',
@@ -1488,6 +1628,12 @@ function pdi_objetivo_ouse_save()
 		);
 		exit;
 	}
+
+	pdi_insert_logs(
+		'Objetivo Ouse "' . $args->descricao . '" inserido',
+		'insert',
+		$dados
+	);
 
 	wp_send_json(
 		array(
@@ -1516,6 +1662,13 @@ function pdi_objetivo_ouse_remove()
 	if (!$remove) {
 		$status = false;
 	}
+
+	pdi_insert_logs(
+		'Objetivo Ouse "' . $objetivoOuseId . '" Removido',
+		'remove',
+		$args
+	);
+
 	wp_send_json(
 		array(
 			'status' => $status,
@@ -1537,6 +1690,12 @@ function pdi_configs_update()
 	$movefile = wp_handle_upload($file, array('test_form' => FALSE));
 	$status = true;
 
+	pdi_insert_logs(
+		'Configurações atualizadas',
+		'update',
+		$args
+	);
+
 	/* $result = [];
 	foreach ($args as $key => $value) {
 		$select = pdi_get_configs(['meta_key' => $key]);
@@ -1550,7 +1709,7 @@ function pdi_configs_update()
 			$result[] = pdi_update_configs(['meta_value' => $value], ['meta_key' => $key], ['%s'], ['%s']);
 		}
 	} */
-	
+
 	wp_send_json(
 		array(
 			'status' => $status,
@@ -1564,3 +1723,179 @@ function pdi_configs_update()
 }
 add_action('wp_ajax_pdi_configs_update', 'pdi_configs_update');
 add_action('wp_ajax_nopriv_pdi_configs_update', 'pdi_configs_update');
+
+function pdi_atores_update()
+{
+	$atorId = filter_input(INPUT_POST, 'ator_id', FILTER_SANITIZE_NUMBER_INT);
+	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
+	parse_str($form, $args);
+	$args = (object) $args;
+
+	$dados = [
+		"descricao" => $args->descricao,
+		"active" => intval($args->active),
+		"updated_at" => date('Y-m-d H:i:s'),
+	];
+	$format = [
+		"%s",
+		"%d",
+		"%s",
+	];
+	$where = ["id" => intval($atorId)];
+	$format_where = ['%d'];
+
+	$update = pdi_update_atores($dados, $where, $format, $format_where);
+
+	if (!$update) {
+		wp_send_json(
+			array(
+				'status' => false,
+				'error' => 'Erro ao atualizar Ator',
+				'update' => $update
+			)
+		);
+		exit;
+	}
+
+	pdi_insert_logs(
+		'Ator "' . $atorId . '" atualizado.',
+		'update',
+		$dados
+	);
+
+	wp_send_json(
+		array(
+			'status' => true,
+			'update' => $update
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_update', 'pdi_atores_update');
+add_action('wp_ajax_nopriv_pdi_atores_update', 'pdi_atores_update');
+
+function pdi_atores_save()
+{
+	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
+	parse_str($form, $args);
+	$args = (object) $args;
+
+	$dados = [
+		'descricao' => $args->descricao,
+		'active' => intval($args->active),
+		'created_at' => date('Y-m-d H:i:s'),
+		'updated_at' => date('Y-m-d H:i:s'),
+	];
+	$format = [
+		'%s',
+		'%d',
+		'%s',
+		'%s',
+	];
+
+	$insert = pdi_set_atores($dados, $format);
+
+	if (!$insert) {
+		wp_send_json(
+			array(
+				'status' => false,
+				'error' => 'Erro ao inserir Ator',
+			)
+		);
+		exit;
+	}
+
+	pdi_insert_logs(
+		'Ator "' . $args->descricao . '" inserido.',
+		'insert',
+		$dados
+	);
+
+	wp_send_json(
+		array(
+			'status' => true,
+			'ator_id' => $insert,
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_save', 'pdi_atores_save');
+add_action('wp_ajax_nopriv_pdi_atores_save', 'pdi_atores_save');
+
+function pdi_atores_remove()
+{
+	$atorId = filter_input(INPUT_POST, 'ator_id', FILTER_SANITIZE_NUMBER_INT);
+
+	$status = true;
+	$args = ['id' => $atorId];
+	$format = ['%d'];
+	$remove = pdi_delete_atores($args, $format);
+
+	ob_start();
+	pdi_get_template_front('admin/table-atores');
+	$html = ob_get_clean();
+
+	if (!$remove) {
+		$status = false;
+	}
+
+	pdi_insert_logs(
+		'Ator "' . $atorId . '" removido.',
+		'remove',
+		$args
+	);
+
+	wp_send_json(
+		array(
+			'status' => $status,
+			'html' => $html,
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_atores_remove', 'pdi_atores_remove');
+add_action('wp_ajax_nopriv_pdi_atores_remove', 'pdi_atores_remove');
+
+function pdi_logs_search()
+{
+	$search = (isset($_POST['search'])) ? $_POST['search'] : null;
+
+	$attr = "WHERE log LIKE '%" . $search . "%'";
+
+	ob_start();
+	pdi_get_template_front('admin/table-logs', $attr);
+	$html = ob_get_clean();
+
+	wp_send_json(
+		array(
+			'status' => 'success',
+			'html' => $html,
+		)
+	);
+	exit;
+}
+
+add_action('wp_ajax_pdi_logs_search', 'pdi_logs_search');
+add_action('wp_ajax_nopriv_pdi_logs_search', 'pdi_logs_search');
+
+function pdi_logs_search_user()
+{
+	$search = (isset($_POST['search'])) ? $_POST['search'] : null;
+
+	$attr = "WHERE user_id=" . $search;
+
+	ob_start();
+	pdi_get_template_front('admin/table-logs', $attr);
+	$html = ob_get_clean();
+
+	wp_send_json(
+		array(
+			'status' => 'success',
+			'html' => $html,
+		)
+	);
+	exit;
+}
+
+add_action('wp_ajax_pdi_logs_search_user', 'pdi_logs_search_user');
+add_action('wp_ajax_nopriv_pdi_logs_search_user', 'pdi_logs_search_user');

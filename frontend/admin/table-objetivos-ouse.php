@@ -22,7 +22,10 @@ if ($variaveis) {
 					<?php if ($ouse->active != 0) : ?>
 						<tr>
 							<td data-ouse-id="<?php echo $ouse->id ?>">
-								<a href="?page=pdi-objetivos-ouse&edit=<?php echo $ouse->id ?>"><?php echo $ouse->id . ' - ' . $ouse->descricao ?></a>
+								<a href="?page=pdi-objetivos-ouse&edit=<?php echo $ouse->id ?>">
+									<?php $ouseNumber = $ouse->number ? $ouse->number : $ouse->id ?>
+									<?php echo $ouse->id . ' - ' . $ouse->descricao ?>
+								</a>
 							</td>
 							<td class="td-remove">
 								<a title="Remover" class="btn-remove btn-remove-objetivos-ouse" data-objetivo-ouse-id="<?php echo $ouse->id ?>">

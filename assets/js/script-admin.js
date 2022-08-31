@@ -1,5 +1,6 @@
 (function ($) {
   $(document).ready(function () {
+    $('.onlyNumber').mask('#########0');
     $(document)
       .on("focus", ".maskAno", function () {
         $(this).mask("0000");
@@ -27,10 +28,10 @@
                 v.length == 0
                   ? "000"
                   : v.length == 1
-                  ? "00" + v
-                  : v.length == 2
-                  ? "0" + v
-                  : v;
+                    ? "00" + v
+                    : v.length == 2
+                      ? "0" + v
+                      : v;
               $(curField)
                 .val(v)
                 .data("mask-isZero", v == "000");
@@ -58,10 +59,10 @@
                 v.length == 0
                   ? "0" + decimalSep + "00"
                   : v.length == 1
-                  ? "0" + decimalSep + "0" + v
-                  : v.length == 2
-                  ? "0" + decimalSep + v
-                  : v;
+                    ? "0" + decimalSep + "0" + v
+                    : v.length == 2
+                      ? "0" + decimalSep + v
+                      : v;
               $(curField)
                 .val(v)
                 .data("mask-isZero", v == "0" + decimalSep + "00");
@@ -121,6 +122,9 @@
         pdi.filterAcoes($(this));
       })
       .on("change", ".admin-filter-metas", function () {
+        pdi.filterMeta($(this));
+      })
+      .on('keyup', '.admin-filter-metas-number', function () {
         pdi.filterMeta($(this));
       })
       .on("change", ".admin-filter-ouse", function () {
@@ -229,10 +233,24 @@
       });
 
     /**
+     * Atores
+     **/
+    $(document)
+      .on("click", ".btn-edit-ator", function () {
+        pdi.atores.update($(this));
+      })
+      .on("click", ".btn-save-ator", function () {
+        pdi.atores.save($(this));
+      })
+      .on("click", ".btn-remove-ator", function (e) {
+        pdi.atores.remove($(this));
+      });
+
+    /**
      * Objetivos Ouse
      **/
     $(document)
-      .on("click", ".save-configs", function () {})
+      .on("click", ".save-configs", function () { })
       .on("click", ".btn-edit-objetivo-ouse", function () {
         pdi.objetivosOuse.update($(this));
       })
@@ -243,20 +261,44 @@
         pdi.objetivosOuse.remove($(this));
       });
 
-      $(document).on('change','#image-top', function() {
-        enviar_imagem(this);
-      })
+    $(document).on('change', '#image-top', function () {
+      enviar_imagem(this);
+    });
+
+    /**
+     * Logs
+     */
+    $(document).on('click', '.btn-search-logs', function () {
+      pdi.logs.search();
+    }).on('click', '.btn-search-logs-user', function () {
+      pdi.logs.searchUser();
+    });
+
+    $(document).on('click', '#myTab button', function (event) {
+      event.preventDefault();
+      $(this).tab('show');
+    });
+
+    var triggerTabList = [].slice.call(document.querySelectorAll('#myTab button'));
+    triggerTabList.forEach(function (triggerEl) {
+      var tabTrigger = new bootstrap.Tab(triggerEl);
+
+      triggerEl.addEventListener('click', function (event) {
+        event.preventDefault();
+        tabTrigger.show();
+      });
+    });
   });
 
   function enviar_imagem(input) {
     if (input.files && input.files[0]) {
-       var reader = new FileReader();
-  
-          reader.onload = function (e) {
-            $('#preview-tela').attr('src', e.target.result);
-            $('#edit_image').val('true')
-          }
-  
+      var reader = new FileReader();
+
+      reader.onload = function (e) {
+        $('#preview-tela').attr('src', e.target.result);
+        $('#edit_image').val('true');
+      };
+
       reader.readAsDataURL(input.files[0]);
     }
   }

@@ -224,17 +224,17 @@ form#filters-metas .form-row {
 .card-indicadores-title .meta {
   text-align: center;
   text-transform: uppercase;
-  letter-spacing: 10px;
+  letter-spacing: 3px;
   margin-left: 10px;
-  font-size: 20px;
+  font-size: 0.8rem;
   font-weight: 600;
 }
 
 .card-indicadores-title .id {
   text-align: center;
-  font-size: 60px;
+  font-size: 4rem;
   font-weight: 600;
-  line-height: 60px;
+  line-height: 4rem;
 }
 
 .card-indicardor-statistic {

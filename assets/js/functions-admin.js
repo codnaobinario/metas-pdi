@@ -129,10 +129,10 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
-        //console.log(response);
+        // console.log(response);
         table.html(response.html);
       },
     });
@@ -140,19 +140,24 @@ var pdi = {
   filterAcoes: function (select) {
     const form = select.closest("form"),
       table = jQuery(".load-table"),
+
       data = {
         action: "pdi_filter_acao",
         form: form.serialize(),
       };
+
+    console.log(data);
+
     table.find("table").remove();
     jQuery.ajax({
       type: "POST",
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
+        console.log(response);
         table.html(response.html);
       },
     });
@@ -171,8 +176,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "html",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         jQuery("#load-table-objetivos-ouse").html(response);
       },
@@ -201,8 +206,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         objetivoEspecifico.resultSearch(input, response.retorno);
       },
@@ -220,8 +225,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "html",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response);
       },
@@ -247,8 +252,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "html",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response);
         local.attr("disabled", false);
@@ -270,8 +275,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response.html);
       },
@@ -294,8 +299,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response.html);
       },
@@ -316,8 +321,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response.html);
       },
@@ -340,8 +345,8 @@ var pdi = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "json",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response.html);
       },
@@ -415,6 +420,84 @@ var pdi = {
             }
             if (type === "remove")
               toastr.success("Grande Tema removido com sucesso");
+          } else {
+            toastr.error(response.error);
+          }
+          if (response.html) table.html(response.html);
+        },
+      });
+    },
+  },
+  atores: {
+    update: function (btn) {
+      const id = btn.attr("data-ator-id"),
+        form = btn.closest("form"),
+        action = "pdi_atores_update";
+
+      this.ajax("update", action, id, form);
+    },
+    save: function (btn) {
+      const form = btn.closest("form"),
+        action = "pdi_atores_save";
+
+      this.ajax("save", action, null, form);
+    },
+    remove: function (btn) {
+      const id = btn.attr("data-ator-id"),
+        table = jQuery(".load-table"),
+        action = "pdi_atores_remove";
+
+      if (
+        confirm(`Tem certeza que deseja remover o Ator (ID = ${id}) ?`)
+      ) {
+        this.ajax("remove", action, id, null, table);
+      }
+    },
+    ajax: function (type, action, atorId, form, table) {
+      var data = {};
+
+      if (type === "update" || type === "save") {
+        data = {
+          action: action,
+          form: form ? form.serialize() : "",
+          ator_id: atorId,
+        };
+      } else {
+        data = {
+          action: action,
+          ator_id: atorId,
+        };
+      }
+
+      jQuery.ajax({
+        type: "POST",
+        url: pdi_options_object.ajaxurl,
+        data: data,
+        dataType: "json",
+        beforeSend: function () {
+          if (type === "update" || type === "save") {
+            loadBlock.add(form);
+          } else {
+            loadBlock.add(table);
+          }
+        },
+        complete: function () {
+          if (type === "update" || type === "save") {
+            loadBlock.remove();
+          }
+        },
+        success: function (response) {
+          if (response.status === true) {
+            if (type === "update")
+              toastr.success("Ator atualizado com sucesso!");
+            if (type === "save") {
+              toastr.success("Ator inserido com sucesso!");
+              window.location.href = `?page=pdi-ator&edit=${response.ator_id}`;
+            }
+            if (type === "remove") {
+              toastr.success("Ator removido com sucesso");
+              jQuery('#load-table-atores').html(response.html);
+            }
           } else {
             toastr.error(response.error);
           }
@@ -544,6 +627,45 @@ var pdi = {
       });
     },
   },
+  logs: {
+    search: function () {
+      const inputSearch = jQuery('#search-logs').val();
+      const table = jQuery('#load-table-logs');
+
+      this.ajax('search', 'pdi_logs_search', table, inputSearch);
+    },
+    searchUser: function () {
+      const inputSearch = jQuery('#search-user').val();
+      const table = jQuery('#load-table-logs');
+
+      this.ajax('search', 'pdi_logs_search_user', table, inputSearch);
+    },
+    ajax: function (type, action, table, value) {
+      var data = {};
+
+      data = {
+        action: action,
+        search: value,
+      };
+
+      jQuery.ajax({
+        type: "POST",
+        url: pdi_options_object.ajaxurl,
+        data: data,
+        dataType: "json",
+        beforeSend: function () {
+          loadBlock.add(table);
+        },
+        complete: function () {
+          loadBlock.remove();
+        },
+        success: function (response) {
+          // console.log(response);
+          if (response.html) table.html(response.html);
+        },
+      });
+    },
+  }
 };
 
 var usersPermission = {
@@ -604,8 +726,8 @@ var usersPermission = {
       url: pdi_options_object.ajaxurl,
       data: data,
       dataType: "html",
-      beforeSend: function () {},
-      complete: function () {},
+      beforeSend: function () { },
+      complete: function () { },
       success: function (response) {
         local.html(response);
       },
@@ -663,8 +785,8 @@ var indicadoresAnos = {
     if (btn.attr("data-id-ano-indicador") !== "undefined") {
       ul.append(
         '<input type="hidden" name="remove_ano_id[]" value="' +
-          btn.attr("data-id-ano-indicador") +
-          '" >'
+        btn.attr("data-id-ano-indicador") +
+        '" >'
       );
     }
   },
