@@ -6,7 +6,7 @@
  * Description: Puglin de Plano de Desenvolvimento Institucional
  * Author: Núcleo Digital
  * Author URI: http://nucleodigital.cc
- * Version: 1.0.0
+ * Version: 2.0.0
  * License: GPLv2 or later
  * Text Domain: pdi-nucleo-digital
  * 
