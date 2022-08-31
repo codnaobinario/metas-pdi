@@ -51,7 +51,7 @@ $users = get_users();
 						<textarea type="text" name="log" id="log" class="form-control" readonly><?php echo $log->log ?></textarea>
 					</div>
 					<div class="col-md-3 col-label">
-						<?php _e('Descrição', PDI_TEXT_DOMAIN) ?>
+						<?php _e('Logs', PDI_TEXT_DOMAIN) ?>
 					</div>
 					<div class="form-group col-md-9">
 						<?php $infos = is_serialized($log->infos) ? maybe_unserialize($log->infos) : $log->infos ?>
