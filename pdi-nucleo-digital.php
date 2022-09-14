@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-define('PDI_VERSION', '1.1.5');
+define('PDI_VERSION', '2.0.1');
 define('PDI_PATH', plugin_dir_path(__FILE__));
 define('PDI_LANG', plugin_dir_path(__FILE__) . '/lang/');
 define('PDI_UPLOAD', plugin_dir_path(__FILE__) . '/uploads/');
