@@ -5,8 +5,6 @@ $indicador = $variaveis;
 if ($indicador->acoes) {
 	$ordernar = classificar_acoes_por_eixo($indicador->acoes);
 	$ordernar = classificar_por_objetivo_especifico($ordernar);
-	print_r(json_encode($ordernar));
-	echo '<br/>';
 }
 
 $i = 0;
@@ -29,8 +27,6 @@ $i = 0;
 		<?php $y == 0; ?>
 		<?php foreach ($ordernar as $eixo => $ordernar__) : ?>
 			<div class="tab-pane fade <?php echo ($y == 0) ? 'show active' : '' ?>" id="nav-eixo<?php echo $eixo ?>" role="tabpanel" aria-labelledby="nav-eixo<?php echo $eixo ?>-tab">
-				<?php print_r(json_encode($ordernar__)) ?>
-				<?php echo '<br/>' ?>
 				<?php foreach ($ordernar__ as $key => $value) : ?>
 					<?php if ($key !== 0) : ?>
 						<?php $obj = pdi_get_objetivo_especifico(['id' => intval($key)]) ?>
