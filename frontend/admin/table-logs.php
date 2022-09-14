@@ -28,9 +28,8 @@ if ($variaveis) {
 		</thead>
 		<tbody>
 			<?php foreach ($logs as $log) : ?>
-				<?php $user = get_user_by('ID', $log->id); ?>
-				<?php $userName = $user->first_name . ' ' . $user->last_name ?>
-				<?php $userName = trim($userName) ? $userName : $user->user_email ?>
+				<?php $user = get_user_by('ID', $log->user_id); ?>
+				<?php $userName = $user->display_name ? $user->display_name : $user->user_email ?>
 				<tr>
 					<td class="id">
 						<a href="?page=pdi-logs&edit=<?php echo $log->id ?>">

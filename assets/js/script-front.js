@@ -77,5 +77,9 @@
             pagination.indicadores($(this));
         });
 
+        $(document).on('change', '.form-filter #grande-tema', function () {
+            filterChange.gt($(this));
+        });
+
     });
 })(jQuery);

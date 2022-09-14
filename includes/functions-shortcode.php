@@ -33,8 +33,8 @@ function add_pdi_front_filters($atts = '')
 								<option value="">Objetivo Ouse</option>
 								<?php if ($ObjetivosOuse) : ?>
 									<?php foreach ($ObjetivosOuse as $ouse) : ?>
-										<option value="<?php echo $ouse->id ?>">
-											<?php echo $ouse->descricao ?>
+										<option value="<?php echo $ouse->id ?>" title="<?php echo $ouse->descricao ?>">
+											<?php echo mb_strimwidth($ouse->descricao, 0, 100, '...') ?>
 										</option>
 									<?php endforeach; ?>
 								<?php endif; ?>

@@ -40,8 +40,7 @@ $users = get_users();
 					</div>
 					<div class="form-group col-md-9">
 						<?php $user = get_user_by('ID', $log->user_id) ?>
-						<?php $userName = $user->first_name . ' ' . $user->last_name ?>
-						<?php $userName = trim($userName) ? $userName : $user->user_email ?>
+						<?php $userName = $user->display_name ? $user->display_name : $user->user_email ?>
 						<input type="text" name="user_id" id="user_id" class="form-control" value="<?php echo $userName ?>" readonly />
 					</div>
 					<div class="col-md-3 col-label">
@@ -89,8 +88,7 @@ $users = get_users();
 					</option>
 					<?php foreach ($users as $user) : ?>
 						<option value="<?php echo $user->ID ?>">
-							<?php $userName = $user->first_name . ' ' . $user->last_name ?>
-							<?php $userName = trim($userName) ? $userName : $user->user_email ?>
+							<?php $userName = $user->display_name ? $user->display_name : $user->user_email ?>
 							<?php echo $userName ?>
 						</option>
 					<?php endforeach; ?>

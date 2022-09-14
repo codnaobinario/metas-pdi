@@ -34,7 +34,7 @@ foreach ($pne_ as $p) {
 	$indicador->pne[] = pdi_get_pne(['id' => intval($p)]);
 }
 
-if($indicador->acoes){
+if ($indicador->acoes) {
 	$acoes_por_ano = filtrar_acoes_por_ano($indicador->acoes);
 	$calculos_acoes = calc_valores_acoes($acoes_por_ano);
 }
@@ -50,27 +50,35 @@ $metas_por_ano = filtrar_metas_por_ano($indicador->indicadores_anos);
 		<div class="card-indicadores-title">
 			<div class="card-top-left">
 				<div class="bar" style="background-color: <?php echo $colors[1] ?>"></div>
-				<div class="meta">META</div>
-				<div class="id"><?php echo $indicador->id ?></div>
+				<div class="meta">
+					<?php _e('Indicador', PDI_TEXT_DOMAIN) ?>
+				</div>
+				<div class="id">
+					<?php echo $indicador->number ? $indicador->number : $indicador->id ?>
+				</div>
 			</div>
 			<div class="card-top-center">
 				<div class="card-label-top">
-					Grande Tema Estratégico
+					<?php _e('Grande Tema Estratégico', PDI_TEXT_DOMAIN) ?>
 				</div>
 				<div class="card-label-botton">
-					<?php printf('%s. %s', $indicador->grande_tema->id, $indicador->grande_tema->descricao) ?>
+					<?php $number = $indicador->grande_tema->number && $indicador->grande_tema->number != 0 ? $indicador->grande_tema->number : null;  ?>
+					<?php $gtNumber = $number ? $number : $indicador->grande_tema->id ?>
+					<?php printf('%s. %s', $gtNumber, $indicador->grande_tema->descricao) ?>
 				</div>
 				<div class="card-label-top">
-					Objetivo Ouse
+					<?php _e('Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
 				</div>
 				<div class="card-label-botton">
-					<?php printf('%s. %s', $indicador->objetivo_ouse->id, $indicador->objetivo_ouse->descricao) ?>
+					<?php $number = $indicador->objetivo_ouse->number && $indicador->objetivo_ouse->number != 0 ? $indicador->objetivo_ouse->number : null;  ?>
+					<?php $ouseNumber = $number ? $number : $indicador->objetivo_ouse->id ?>
+					<?php printf('%s. %s', $ouseNumber, $indicador->objetivo_ouse->descricao) ?>
 				</div>
 			</div>
 			<div class="card-top-right">
 				<button type="button" class="btn btn-actions-indicadores btn-add-notification" data-indicador-id="<?php echo $indicador->id ?>">
 					<i class="fas fa-bell"></i>
-					Receber notificações
+
 				</button>
 			</div>
 		</div>
@@ -78,25 +86,33 @@ $metas_por_ano = filtrar_metas_por_ano($indicador->indicadores_anos);
 			<form action="" id="form-notification-<?php echo $indicador->id ?>" style="display: none;">
 				<div class="form-row row-send-notification">
 					<div class="form-group col-md-12">
-						<label class="label-top" for="">Receba atualizações sobre esta meta por e-mail</label>
+						<label class="label-top" for="">
+							<?php _e('Receba atualizações sobre esta meta por e-mail', PDI_TEXT_DOMAIN) ?>
+						</label>
 					</div>
 					<input type="hidden" name="notification_indicador_id" value="<?php echo $indicador->id ?>">
 					<div class="form-group col-md-6">
-						<label for="">Nome<span class="label-required">*</span></label>
+						<label for="">
+							<?php _e('Nome', PDI_TEXT_DOMAIN) ?>
+							<span class="label-required">*</span></label>
 						<input type="text" name="notification_name" class="form-control" required>
 					</div>
 					<div class="form-group col-md-6">
-						<label for="">Email<span class="label-required">*</span></label>
+						<label for="">
+							<?php _e('Email', PDI_TEXT_DOMAIN) ?>
+							<span class="label-required">*</span></label>
 						<input type="email" name="notification_email" class="form-control" required>
 					</div>
 					<div class="form-group col-md-12">
 						<div class="form-check check-privacy-terms">
 							<input type="checkbox" value="1" id="privacy-terms-<?php echo $indicador->id ?>" name="privacy-terms" class="form-check-input privacy-terms" required>
-							<label class="form-check-label" for="privacy-terms-<?php echo $indicador->id ?>">Eu concordo em fornecer meu endereço de e-mail ao "Portal de Monitoramento do PDI" para receber informações sobre novas publicações do site, atualização de dados, informativos e eventos vinculados ao PDI da Unifesp. Estou ciente que posso revogar esse consentimento a qualquer momento por e-mail, clicando no link "cancelar inscrição", localizado na parte inferior de qualquer mensagem enviada a mim para os fins mencionados acima ou via Ouvidoria na página <a href="https://www.ouvidoria.unifesp.br">https://www.ouvidoria.unifesp.br</a></label>
+							<label class="form-check-label" for="privacy-terms-<?php echo $indicador->id ?>"><?php _e('Eu concordo em fornecer meu endereço de e-mail ao "Portal de Monitoramento do PDI" para receber informações sobre novas publicações do site, atualização de dados, informativos e eventos vinculados ao PDI da Unifesp. Estou ciente que posso revogar esse consentimento a qualquer momento por e-mail, clicando no link "cancelar inscrição", localizado na parte inferior de qualquer mensagem enviada a mim para os fins mencionados acima ou via Ouvidoria na página', PDI_TEXT_DOMAIN) ?> <a href="https://www.ouvidoria.unifesp.br">https://www.ouvidoria.unifesp.br</a></label>
 						</div>
 					</div>
 					<div class="form-group col-md-12 text-right">
-						<button type="button" class="btn btn-secondary add-notification" data-indicador-id="<?php echo $indicador->id ?>">Receber notificações</button>
+						<button type="button" class="btn btn-secondary add-notification" data-indicador-id="<?php echo $indicador->id ?>">
+							<?php _e('Receber notificações', PDI_TEXT_DOMAIN) ?>
+						</button>
 					</div>
 				</div>
 			</form>

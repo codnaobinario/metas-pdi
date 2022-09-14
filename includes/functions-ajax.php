@@ -1899,3 +1899,34 @@ function pdi_logs_search_user()
 
 add_action('wp_ajax_pdi_logs_search_user', 'pdi_logs_search_user');
 add_action('wp_ajax_nopriv_pdi_logs_search_user', 'pdi_logs_search_user');
+
+function pdi_grande_tema_change()
+{
+	$gt = isset($_POST['gt']) ? $_POST['gt'] : null;
+
+	$args = array(
+		'active' => 1,
+	);
+	if ($gt) {
+		$args['grande_tema_id'] = intval($gt);
+	}
+
+	$ObjetivosOuse = pdi_get_objetivos_ouse_all($args);
+	ob_start();
+?>
+	<option value="">
+		<?php _e('Objetivo Ouse', PDI_TEXT_DOMAIN) ?>
+	</option>
+	<?php foreach ($ObjetivosOuse as $ouse) : ?>
+		<option value="<?php echo $ouse->id ?>" title="<?php echo $ouse->descricao ?>">
+			<?php echo mb_strimwidth($ouse->descricao, 0, 100, '...') ?>
+		</option>
+	<?php endforeach; ?>
+<?php
+
+	echo ob_get_clean();
+	exit;
+}
+
+add_action('wp_ajax_pdi_grande_tema_change', 'pdi_grande_tema_change');
+add_action('wp_ajax_nopriv_pdi_grande_tema_change', 'pdi_grande_tema_change');

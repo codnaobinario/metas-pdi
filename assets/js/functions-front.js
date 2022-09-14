@@ -1,5 +1,5 @@
 var pdiFront = {
-    filterMetas: function(btn) {
+    filterMetas: function (btn) {
         const form = btn.closest('form#filters-metas');
         var data = {
             action: 'pdi_filter_front_metas',
@@ -12,18 +12,18 @@ var pdiFront = {
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'html',
-            beforeSend: function() {
+            beforeSend: function () {
                 loadBlockFront.add(jQuery('.load-card-metas'));
             },
-            complete: function() {
+            complete: function () {
                 loadBlockFront.remove();
             },
-            success: function(response) {
+            success: function (response) {
                 jQuery('.load-card-metas').html(response);
             }
         });
     },
-    addNotification: function(btn) {
+    addNotification: function (btn) {
         const id = btn.attr('data-indicador-id'),
             form = jQuery('form#form-notification-' + id);
 
@@ -38,7 +38,7 @@ var pdiFront = {
             return false;
         }
 
-        var valid = validadeForm.check(form)
+        var valid = validadeForm.check(form);
 
         if (valid.status === false) {
             notificationBlock.add(form, valid.msg, 'error');
@@ -50,13 +50,13 @@ var pdiFront = {
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 loadBlockFront.add(form);
             },
-            complete: function() {
+            complete: function () {
                 loadBlockFront.remove();
             },
-            success: function(response) {
+            success: function (response) {
                 if (response.status == 'error') {
                     notificationBlock.add(form, response.msg_error, 'error');
                 } else {
@@ -67,7 +67,7 @@ var pdiFront = {
             },
         });
     },
-    addComments: function(btn) {
+    addComments: function (btn) {
         var form = btn.closest('form');
 
         notificationBlock.remove();
@@ -87,13 +87,13 @@ var pdiFront = {
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'json',
-            beforeSend: function() {
+            beforeSend: function () {
                 loadBlockFront.add(form);
             },
-            complete: function() {
+            complete: function () {
                 loadBlockFront.remove();
             },
-            success: function(response) {
+            success: function (response) {
                 form.find('textarea').val('');
                 notificationBlock.add(form, 'Comentário inserido com sucesso!', 'success');
                 comments.reloadComments(form.find('input[name=indicador_id]').val());
@@ -101,33 +101,33 @@ var pdiFront = {
         });
     },
 
-}
+};
 
 var comments = {
-    reloadComments: function(indicador_id) {
+    reloadComments: function (indicador_id) {
 
         var data = {
             action: 'pdi_comments_reload',
             indicador_id: indicador_id
-        }
+        };
 
         jQuery.ajax({
             type: 'POST',
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'html',
-            beforeSend: function() {
+            beforeSend: function () {
 
             },
-            complete: function() {
+            complete: function () {
 
             },
-            success: function(response) {
+            success: function (response) {
                 jQuery('.comments-previews').html(response);
             },
         });
     },
-    loadblockReply: function(btn) {
+    loadblockReply: function (btn) {
         var indicador_id = btn.attr('data-indicador_id'),
             id_comment = btn.attr('data-comment-id');
         var block = '<form action=""><div class="form-row"><input type="hidden" name="indicador_id" value="' + indicador_id + '"><input type="hidden" name="comment_reply" value="' + id_comment + '"><div class="form-group col-md-12"><textarea name="text_comment" id="text-comment" rows="5" class="form-control"></textarea></div><div class="form-group col-md-12 button-comments"><button type="button" class="btn btn-primary add-comments">Enviar</button></div></div></form>';
@@ -141,7 +141,7 @@ var comments = {
             b.html(block).show().addClass('active').attr('data-preview-reply', 'true');
         }
     },
-    delete: function(btn) {
+    delete: function (btn) {
         var comment_id = btn.attr('data-comment-id'),
             indicador_id = btn.attr('data-indicador_id'),
             reply = btn.attr('data-reply');
@@ -158,44 +158,44 @@ var comments = {
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'json',
-            beforeSend: function() {},
-            complete: function() {},
-            success: function(response) {
+            beforeSend: function () { },
+            complete: function () { },
+            success: function (response) {
                 console.log(response);
                 btn.closest('.comment').fadeOut();
                 comments.reloadComments(indicador_id);
             },
         });
     }
-}
+};
 
 var pagination = {
-    comments: function(btn) {
+    comments: function (btn) {
         var page = btn.attr('data-page'),
             indicador_id = btn.attr('data-indicador'),
             data = {
                 action: 'pdi_pagination_comments',
                 page: page,
                 indicador_id: indicador_id,
-            }
+            };
 
         jQuery.ajax({
             type: 'POST',
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'html',
-            beforeSend: function() {
+            beforeSend: function () {
 
             },
-            complete: function() {
+            complete: function () {
 
             },
-            success: function(response) {
+            success: function (response) {
                 jQuery('.comments-previews').html(response);
             },
         });
     },
-    indicadores: function(btn) {
+    indicadores: function (btn) {
         var page = btn.attr('data-page'),
             form = jQuery('form#filters-metas'),
             data = {
@@ -211,44 +211,44 @@ var pagination = {
             url: pdi_options_object.ajaxurl,
             data: data,
             dataType: 'html',
-            beforeSend: function() {
+            beforeSend: function () {
                 loadBlockFront.add(jQuery('.load-card-metas'));
             },
-            complete: function() {
+            complete: function () {
                 loadBlockFront.remove();
             },
-            success: function(response) {
+            success: function (response) {
                 jQuery('.load-card-metas').html(response);
             },
         });
     }
-}
+};
 
 var loadBlockFront = {
-    add: function(local) {
+    add: function (local) {
         local.append('<div class="load-form"><i class="fas fa-cog fa-spin"></i>Aguarde...</div>');
     },
-    remove: function() {
+    remove: function () {
         jQuery('.load-form').remove();
     }
-}
+};
 var notificationBlock = {
-    add: function(local, texto, status) {
+    add: function (local, texto, status) {
         console.log('aqui');
         local.append('<div class="col-md-12 return-notification ' + status + '">' + texto + '</div>');
     },
-    remove: function() {
+    remove: function () {
         jQuery('.return-notification').remove();
     }
-}
+};
 
 var validadeForm = {
-    check: function(form) {
+    check: function (form) {
         var id = form.attr('id');
         var r = true,
             msg = '',
             return_id = '';
-        jQuery('#' + id + ' input, #' + id + ' select, #' + id + ' textarea').each(function(i, e) {
+        jQuery('#' + id + ' input, #' + id + ' select, #' + id + ' textarea').each(function (i, e) {
             var label = jQuery(this).closest('div').find('label');
             if (jQuery(this).prop('required') && (jQuery(this).val() == '' || !jQuery(this).val()) && jQuery(this).is(':visible')) {
                 r = false;
@@ -277,4 +277,33 @@ var validadeForm = {
         };
         return ret;
     }
-}
+};
+
+const filterChange = {
+    gt: function (slc) {
+        const gt = slc.val();
+
+        const data = {
+            action: 'pdi_grande_tema_change',
+            gt,
+        };
+
+        jQuery.ajax({
+            type: 'POST',
+            url: pdi_options_object.ajaxurl,
+            data: data,
+            dataType: 'html',
+            beforeSend: function () {
+                jQuery('#objetivo-ouse').html('<option value="">Atualizando...</option>');
+            },
+            complete: function () {
+
+            },
+            success: function (response) {
+                // console.log(response);
+                jQuery('#objetivo-ouse').html(response);
+            },
+        });
+
+    }
+};

@@ -36,7 +36,7 @@ function pdi_insert_logs(string $log, string $status, $infos)
 		'log'						=> $log,
 		'status'				=> $status,
 		'infos'					=> $infos,
-		'user_id'				=> 1,
+		'user_id'				=> get_current_user_id(),
 		'created_at'		=> date('Y-m-d H:i:s'),
 	);
 
@@ -111,9 +111,9 @@ function pdi_update_pne(array $args, array $where, array $format = null, array $
 	return PDI_DB::update_option(TABLE_PNE, $args, $where, $format, $where_format);
 }
 
-function pdi_get_objetivos_ouse_all(array $filter = array())
+function pdi_get_objetivos_ouse_all(array $filter = array(), int $per_page = null,  int $page = 1,  string $order = 'descricao',  string $orderby = 'ASC', string $query_string = null)
 {
-	return PDI_DB::get_table(TABLE_OBJETIVOS_OUSE, $filter);
+	return PDI_DB::get_table(TABLE_OBJETIVOS_OUSE, $filter, $per_page, $page, $order, $orderby, $query_string);
 }
 
 function pdi_get_objetivos_ouse(array $args)
@@ -191,9 +191,9 @@ function pdi_delete_indicadores_anos(array $args, array $format = null)
 	return PDI_DB::delete_option(TABLE_INDICADORES_ANOS, $args, $format);
 }
 
-function pdi_get_grande_tema_all(array $filter = array())
+function pdi_get_grande_tema_all(array $filter = array(), int $per_page = null,  int $page = 1,  string $order = 'descricao',  string $orderby = 'ASC', string $query_string = null)
 {
-	return PDI_DB::get_table(TABLE_GRANDE_TEMA, $filter);
+	return PDI_DB::get_table(TABLE_GRANDE_TEMA, $filter, $per_page, $page, $order, $orderby, $query_string);
 }
 
 function pdi_get_grande_tema(array $args)
@@ -522,8 +522,12 @@ function classificar_por_objetivo_especifico($acoes)
 	foreach ($acoes as $key => $value) {
 		foreach ($value as $v) {
 			$ob = json_decode($v->objetivo_especifico);
-			foreach ($ob as $obj) {
-				$a[$key][$obj][] = $v;
+			if ($ob) {
+				foreach ($ob as $obj) {
+					$a[$key][$obj][] = $v;
+				}
+			} else {
+				$a[$key][0][] = $v;
 			}
 		}
 	}
@@ -712,4 +716,14 @@ function msg_email_update_metas($indicador, $notification)
 	</table>
 <?php
 	return ob_get_clean();
+}
+
+function limit_words($string, $word_limit)
+{
+	$words = explode(' ', $string, ($word_limit + 1));
+	if (count($words) > $word_limit) {
+		array_pop($words);
+		array_push($words, '...');
+	}
+	return implode(' ', $words);
 }
