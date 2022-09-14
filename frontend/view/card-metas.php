@@ -46,7 +46,7 @@ if (!$variaveis) {
 					<a href="<?php echo site_url('/detalhes-meta/?indicador_id=' . $indicador->id) ?>">
 						<div class="bar" style="background-color: <?php echo $colors[1] ?>"></div>
 						<div class="meta">
-
+							<?php _e('Indicador', PDI_TEXT_DOMAIN) ?>
 						</div>
 						<div class="id"><?php echo $indicador->number ? $indicador->number : $indicador->id ?></div>
 					</a>
