@@ -480,7 +480,7 @@ function calc_porcent_meta($vlrInicial, $vlrAtual)
 	$vlr1 = ($vlrInicial / 100);
 	if ($vlr1 > 0) {
 		$calc = $vlrAtual / $vlr1;
-		return number_format($calc, 0);
+		return number_format($calc, 1);
 	} else {
 		return 0;
 	}
@@ -496,10 +496,10 @@ function calc_valores_indicares_linha($valorInicial, $valorFinal, $valorAtual)
 
 function calcular_porcentagem_acoes_concluidas($acoes)
 {
-	$valor = 0;
+	$valor = 0.00;
 	$i = 0;
 	foreach ($acoes as $acao) {
-		$valor = $valor + intval($acao->percentual_cumprido);
+		$valor = $valor + floatval($acao->percentual_cumprido);
 		$i++;
 	}
 

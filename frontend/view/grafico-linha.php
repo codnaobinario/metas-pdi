@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $indicador = $variaveis;
 $indicares_anos = pdi_get_indicadores_anos_all(['indicador_id' => $indicador->id]);
 $valores1 = [];
@@ -7,18 +7,20 @@ $valores1_view = [];
 $valores2 = [];
 $valores2_view = [];
 $anos = [];
-foreach($indicares_anos as $indic_anos){
-	$valores1[] = calc_valores_indicares_linha($indicador->valor_inicial, $indicador->valor_meta, $indic_anos->valor);;
+foreach ($indicares_anos as $indic_anos) {
+	$valores1[] = calc_valores_indicares_linha($indicador->valor_inicial, $indicador->valor_meta, $indic_anos->valor);
 	$valores1_view[] = $indic_anos->valor;
 	$valores2[] = calc_valores_indicares_linha($indicador->valor_inicial, $indicador->valor_meta, $indic_anos->valor_previsto);
 	$valores2_view[] = $indic_anos->valor_previsto;
-	$anos[] = intval(date('Y', strtotime($indic_anos->data_registro)));
+	$anos[] = intval($indic_anos->ano);
 }
-$valorInicial = 0.03;
+// $valorInicial = $indicador->valor_inicial;
+$valorInicial = calc_valores_indicares_linha(null, $indicador->valor_meta, $indicador->valor_inicial);
 /* $anos = [2021, 2022, 2023, 2024, 2025];
 $valores1 = [0.25, 0.48, 0.61, 0, 0];
 $valores2 = [0, 0.68, 0.71, 0.88, 1]; */
 $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
+// $anoInicial = $anos[0];
 
 ?>
 
@@ -67,6 +69,7 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 				} else {
 					$inicio = ($i == 0) ? $valorInicial : $valores1[$i - 1];
 				}
+
 				?>
 				<div class="divisoes" style="--start:<?php echo $inicio ?>; --end:<?php echo $valores1[$i] ?>;"></div>
 			<?php endfor; ?>
@@ -88,8 +91,13 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 		</div>
 	</div>
 	<div class="grafico-linha-views">
-		<div></div>
+		<div class="divisoes">
+			<div class="ponto" style="--valor:<?php echo $valorInicial ?>;">
+				<span><?php echo $indicador->valor_inicial ?></span>
+			</div>
+		</div>
 		<div class="grafico-linha-pontos">
+
 			<?php for ($i = 0; $i < count($valores1); $i++) : ?>
 				<div class="divisoes">
 					<?php if ($valores1[$i] != 0 && $valores1[$i]) : ?>
@@ -102,7 +110,11 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 		</div>
 	</div>
 	<div class="grafico-linha-views">
-		<div></div>
+		<div class="divisoes">
+			<div class="ponto" style="--valor:<?php echo $valorInicial ?>;">
+				<span><?php echo $indicador->valor_inicial ?></span>
+			</div>
+		</div>
 		<div class="grafico-linha-pontos2">
 			<?php for ($i = 0; $i < count($valores2); $i++) : ?>
 				<div class="divisoes">

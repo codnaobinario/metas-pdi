@@ -1,5 +1,5 @@
 <?php
-defined( 'ABSPATH' ) or die( 'No script kiddies please!' );
+defined('ABSPATH') or die('No script kiddies please!');
 $acoes = $variaveis['valores_acoes'];
 $metas = $variaveis['dados_meta'];
 $metaInicial = $variaveis['meta_valor_inical'];

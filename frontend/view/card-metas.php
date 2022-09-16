@@ -192,7 +192,7 @@ if (!$variaveis) {
 								$var = [
 									'indicador_id' => $indicador->id,
 									'colors' => $colors,
-									'valores_acoes' => $calculos_acoes[$indicador_anos->ano],
+									'valores_acoes' => $calculos_acoes[$indicador->id][$indicador_anos->ano],
 									'dados_meta' => $metas_por_ano[$indicador_anos->ano],
 									'meta_valor_inical' => $indicador->valor_inicial,
 									'meta_valor_final' => $indicador->valor_meta,

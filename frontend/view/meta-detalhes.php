@@ -194,10 +194,11 @@ $metas_por_ano = filtrar_metas_por_ano($indicador->indicadores_anos);
 						<div class="indicador-chart-<?php echo $indicador->id ?> <?php echo ($indicador_anos->ano == $ano_atual) ? 'active' : '' ?>" id="indicador-chart-<?php printf('%s-%s', $indicador->id, $indicador_anos->ano) ?>" <?php echo ($indicador_anos->ano == $ano_atual) ? '' : 'style="display:none"' ?>">
 							<?php
 							$porcentMeta = calc_porcent_meta($metas_por_ano[$indicador_anos->ano]->valor_previsto, $metas_por_ano[$indicador_anos->ano]->valor);
+
 							$var = [
 								'indicador_id' => $indicador->id,
 								'colors' => $colors,
-								'valores_acoes' => $calculos_acoes[$indicador_anos->ano],
+								'valores_acoes' => $calculos_acoes[$indicador->id][$indicador_anos->ano],
 								'dados_meta' => $metas_por_ano[$indicador_anos->ano],
 								'meta_valor_inical' => $indicador->valor_inicial,
 								'meta_valor_final' => $indicador->valor_meta,
@@ -252,6 +253,9 @@ $metas_por_ano = filtrar_metas_por_ano($indicador->indicadores_anos);
 				</div>
 				<div class="col-md-11 mt-5">
 					<div class="chart-box mb-5">
+						<!-- <div class="legenda-grafico-linha">
+							<?php _e('% de metas cumpripas sobre meta do indicador') ?>
+						</div> -->
 						<?php pdi_get_template_front('view/grafico-linha', $indicador) ?>
 					</div>
 				</div>

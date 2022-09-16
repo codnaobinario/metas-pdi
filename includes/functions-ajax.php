@@ -327,6 +327,7 @@ function pdi_update_meta()
 	if ($update_indicador) {
 		$i = 0;
 		$update_indicador_ano = [];
+
 		foreach ($args->ano_meta as $ano_meta) {
 			$indicadorAno = [
 				'indicador_id' => intval($args->id),
@@ -335,6 +336,7 @@ function pdi_update_meta()
 				'valor_previsto' => convert_real_float($args->valor_previsto_ano_meta[$i]),
 				'data_registro' => convert_data_db($args->data_registro_ano_meta[$i]),
 				'justificativa' => $args->justificativa_ano_meta[$i],
+				'updated_at' => date('Y-m-d H:i:s'),
 			];
 
 			$format = [
@@ -344,18 +346,22 @@ function pdi_update_meta()
 				'%f',
 				'%s',
 				'%s',
+				'%s',
 			];
 
-			$get_anos = pdi_get_indicadores_anos($indicadorAno);
+			$argsGetIndicadorAno = array(
+				'indicador_id' => intval($args->id),
+				'ano' => intval($ano_meta),
+			);
+
+			$get_anos = pdi_get_indicadores_anos($argsGetIndicadorAno);
 			$get_anos_[] = $get_anos;
 			if (!$get_anos) {
 				$indicadorAno['created_at'] = date('Y-m-d H:i:s');
-				$indicadorAno['updated_at'] = date('Y-m-d H:i:s');
 				$insert =  pdi_set_indicadores_anos($indicadorAno, $format);
 				$update_indicador_ano[] = $insert;
 			} else {
-				$indicadorAno['updated_at'] = date('Y-m-d H:i:s');
-				$where = ['id' => $args->ano_id[$i]];
+				$where = ['id' => $get_anos[0]->id];
 				$where_format = ['%d'];
 				$update_indicador_ano[] = pdi_update_indicadores_anos($indicadorAno, $where, $format, $where_format);
 			}
@@ -378,6 +384,7 @@ function pdi_update_meta()
 		array(
 			'status' => true,
 			'update_indicador' => $update_indicador,
+			'update_indicador_ano' => $update_indicador_ano,
 			'get_anos' => $get_anos_,
 			'insert' => $insert,
 			'indicador' => $indicador,

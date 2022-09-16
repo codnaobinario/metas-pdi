@@ -149,6 +149,7 @@ function pdi_init_admin()
 	 */
 	$localize = array(
 		'ajaxurl' => admin_url('admin-ajax.php'),
+		'security' => wp_create_nonce('file_upload'),
 	);
 	if ($_GET) {
 		$localize['get'] = $_GET;

@@ -953,6 +953,8 @@ class PDI_DB
 			$where_format,
 		);
 
+		return $update;
+
 		if (!$update) {
 			return ($wpdb->insert_id) ? $wpdb->insert_id : false;
 		}

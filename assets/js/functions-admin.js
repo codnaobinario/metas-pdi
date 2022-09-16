@@ -111,7 +111,7 @@ var pdi = {
       },
       success: function (response) {
         if (response.status == true) toastr.success("Meta atualizada!");
-        //console.log(response);
+        console.log(response);
         //location.reload();
       },
     });

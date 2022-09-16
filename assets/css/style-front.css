@@ -1161,6 +1161,40 @@ form#filters-metas .form-row {
   justify-content: center;
 }
 
+.grafico-linha .grafico-linha-views > .divisoes .ponto {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  border: 1px solid #ffffff;
+  left: 40px;
+  top: calc(100% * (0.975 - var(--valor)));
+  background-color: var(--color1);
+  box-shadow: 0 0 5px 1px #ffffff;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.grafico-linha .grafico-linha-views > .divisoes .ponto2 {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  position: absolute;
+  border: 1px solid #ffffff;
+  left: 40px;
+  top: calc(100% * (0.975 - var(--valor)));
+  background-color: var(--color2);
+  box-shadow: 0 0 5px 1px #ffffff;
+  z-index: 1;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
 .grafico-linha .grafico-linha-views .divisoes .ponto:hover {
   box-shadow: 0 0 5px 1px #333;
   border-color: #444;
@@ -1172,6 +1206,22 @@ form#filters-metas .form-row {
   .divisoes
   .ponto
   span {
+  position: relative;
+  top: -20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color2);
+}
+
+.grafico-linha .grafico-linha-views > .divisoes .ponto span {
+  position: relative;
+  top: -20px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--color1);
+}
+
+.grafico-linha .grafico-linha-views > .divisoes .ponto2 span {
   position: relative;
   top: -20px;
   font-size: 12px;
@@ -1264,6 +1314,13 @@ form#filters-metas .form-row {
 }
 
 .grafico-linha-infos .linha2 .label {
+}
+
+.legenda-grafico-linha {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #666666;
+  font-size: 0.8rem;
 }
 
 @media screen and (max-width: 768px) {
