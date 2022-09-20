@@ -32,7 +32,7 @@ $title_filter = pdi_get_configs(array('meta_key' => 'title_filters'));
 $filter_active = pdi_get_configs(array('meta_key' => 'filter_active'));
 
 global $current_user;
-if (in_array('pdi_nivel_1', $current_user->roles) || in_array('pdi_nivel_2', $current_user->roles)) :
+if (in_array('pdi_nivel_2', $current_user->roles) || in_array('pdi_nivel_3', $current_user->roles) || in_array('pdi_nivel_4', $current_user->roles)) :
 	pdi_get_template_front('admin/no-permission');
 else :
 ?>

@@ -2,7 +2,7 @@
 defined('ABSPATH') or die('No script kiddies please!');
 
 global $current_user;
-if (in_array('pdi_nivel_1', $current_user->roles) || in_array('pdi_nivel_2', $current_user->roles)) :
+if (in_array('pdi_nivel_2', $current_user->roles) || in_array('pdi_nivel_3', $current_user->roles) || in_array('pdi_nivel_4', $current_user->roles)) :
 	pdi_get_template_front('admin/no-permission');
 else :
 ?>

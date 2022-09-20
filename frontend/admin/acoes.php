@@ -5,8 +5,8 @@ $objetivoOuse = pdi_get_objetivos_ouse_all();
 $eixos = pdi_get_eixo_all();
 $atores = pdi_get_atores_all();
 global $current_user;
-$nivel_1 = in_array('pdi_nivel_1', $current_user->roles);
-$nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
+$nivel_4 = in_array('pdi_nivel_4', $current_user->roles);
+$nivel_3 = in_array('pdi_nivel_3', $current_user->roles);
 ?>
 <?php if (!$_GET['acao_id']) : ?>
 	<div class="container-fluid pdi-container">
@@ -95,7 +95,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						<div class="">Indicador Meta</div>
 					</div>
 					<div class="form-group col-md-10">
-						<select name="indicador_meta" id="indicador-meta" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						<select name="indicador_meta" id="indicador-meta" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?>>
 							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($indicadores as $indicador) : ?>
 								<?php if ($indicador->active != 0) : ?>
@@ -109,7 +109,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						<div class="">Eixo</div>
 					</div>
 					<div class="form-group col-md-10">
-						<select name="eixo" id="eixo" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						<select name="eixo" id="eixo" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?>>
 							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($eixos as $eixo) : ?>
 								<?php if ($eixo->active != 0) : ?>
@@ -131,9 +131,9 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 										<?php foreach ($objEspecifico as $objEsp) : ?>
 											<?php $obj = pdi_get_objetivo_especifico(['id' => $objEsp]); ?>
 											<li class="blocos-objetivo-especifico">
-												<input type="text" name="objetivo_especifico[]" class="form-control input-objetivo-especifico" data-input-save="true" value="<?php echo $obj[0]->descricao ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?> />
+												<input type="text" name="objetivo_especifico[]" class="form-control input-objetivo-especifico" data-input-save="true" value="<?php echo $obj[0]->descricao ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?> />
 												<div class="dropdown-objetivo-especifico" style="display: none;"></div>
-												<a class="remove-objetivo-especifico ml-3" title="Remover" <?php echo ($nivel_1) ? 'disabled' : '' ?>>
+												<a class="remove-objetivo-especifico ml-3" title="Remover" <?php echo ($nivel_4) ? 'disabled' : '' ?>>
 													<span class="dashicons dashicons-trash text-danger"></span>
 												</a>
 											</li>
@@ -141,7 +141,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 									</ul>
 								</div>
 								<div class="col-md-4 objetivos-especificos-button">
-									<button type="button" class="btn btn-success add-objetivo-especifico" <?php echo ($nivel_1) ? 'disabled' : '' ?>>
+									<button type="button" class="btn btn-success add-objetivo-especifico" <?php echo ($nivel_4) ? 'disabled' : '' ?>>
 										<span class="dashicons dashicons-plus"></span>
 										Adicionar Objetivo Específico
 									</button>
@@ -156,14 +156,14 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 						<div class="">Descrição da Ação</div>
 					</div>
 					<div class="form-group col-md-10">
-						<input type="text" name="desc_acao" id="desc-acao" class="form-control" value="<?php echo $acao->descricao_acao ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						<input type="text" name="desc_acao" id="desc-acao" class="form-control" value="<?php echo $acao->descricao_acao ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?>>
 					</div>
 					<div class="clear-line"></div>
 					<div class="col-md-2 col-label">
 						<div class="">Ator</div>
 					</div>
 					<div class="form-group col-md-4">
-						<select name="ator_acao" id="ator-acao" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>
+						<select name="ator_acao" id="ator-acao" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?>>
 							<option value=""><?php _e('Selecione...', PDI_TEXT_DOMAIN) ?></option>
 							<?php foreach ($atores as $ator) : ?>
 								<?php if ($ator->active != 0) : ?>
@@ -178,7 +178,7 @@ $nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
 					</div>
 					<div class="form-group col-md-2">
 						<input type="text" name="ano_acao" id="ano-acao" class="form-control" value="<?php echo $acao->ano_acao ?>">
-						<!-- <select name="ano_acao" id="ano-acao" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?>>	
+						<!-- <select name="ano_acao" id="ano-acao" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?>>	
 							<select name="ano_acao" id="ano-acao" class="form-control">
 							<option value="">Selecione o Indicador Meta</option>
 						</select> -->

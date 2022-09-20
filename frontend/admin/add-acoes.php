@@ -5,15 +5,15 @@ $atores = pdi_get_atores_all();
 $indicadores = pdi_get_indicadores_all();
 
 global $current_user;
-$nivel_1 = in_array('pdi_nivel_1', $current_user->roles);
-$nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
+$nivel_4 = in_array('pdi_nivel_4', $current_user->roles);
+$nivel_3 = in_array('pdi_nivel_3', $current_user->roles);
 $ator_meta = get_user_meta($current_user->id, 'pdi_ator');
 
 if ($_GET['indicador']) {
 	$indicadorId = $_GET['indicador'];
 }
 
-if ($nivel_1) :
+if ($nivel_4) :
 	pdi_get_template_front('admin/no-permission');
 else :
 ?>

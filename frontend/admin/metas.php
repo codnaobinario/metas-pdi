@@ -5,10 +5,12 @@ $objetivos_ouse = pdi_get_objetivos_ouse_all();
 $ods = pdi_get_ods_all();
 $pne = pdi_get_pne_all();
 global $current_user;
-$nivel_1 = in_array('pdi_nivel_1', $current_user->roles);
-$nivel_2 = in_array('pdi_nivel_2', $current_user->roles);
+$nivel_4 = in_array('pdi_nivel_4', $current_user->roles);
+$nivel_3 = in_array('pdi_nivel_3', $current_user->roles);
 
-if (in_array('pdi_nivel_3', $current_user->roles) || in_array('pdi_nivel_4', $current_user->roles)) :
+$inactive = false;
+
+if ($nivel_3 || $nivel_4) :
 	$inactive = true;
 endif;
 ?>
@@ -108,7 +110,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-9">
-								<select name="grande_tema" id="grande-tema" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<select name="grande_tema" id="grande-tema" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 									<option value="">
 										<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
 									</option>
@@ -126,7 +128,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-9">
-								<select name="objetivo_ouse" id="objetivo-ouse" class="form-control" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<select name="objetivo_ouse" id="objetivo-ouse" class="form-control" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 									<option value="">
 										<?php _e('Selecione...', PDI_TEXT_DOMAIN) ?>
 									</option>
@@ -144,7 +146,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-9">
-								<input type="text" name="indicador" id="indicador" class="form-control" value="<?php echo $meta->titulo ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<input type="text" name="indicador" id="indicador" class="form-control" value="<?php echo $meta->titulo ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 							</div>
 							<div class="clear-line"></div>
 							<div class="col-md-3 col-label">
@@ -153,7 +155,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-9">
-								<textarea name="desc_meta" id="desc-meta" class="form-control" rows="3" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>><?php echo $meta->descricao ?></textarea>
+								<textarea name="desc_meta" id="desc-meta" class="form-control" rows="3" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>><?php echo $meta->descricao ?></textarea>
 							</div>
 							<div class="clear-line"></div>
 							<?php if ($ods) : ?>
@@ -171,7 +173,7 @@ endif;
 										<?php
 									} ?>
 										<div class="form-check form-check-inline form-check-inline-pdi">
-											<input class="form-check-input" type="checkbox" id="<?php echo $ods[$i]->slug ?>" name="ods[]" value="<?php echo $ods[$i]->id ?>" <?php echo (array_search($ods[$i]->id, $metaOds) !== false && $metaOds) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+											<input class="form-check-input" type="checkbox" id="<?php echo $ods[$i]->slug ?>" name="ods[]" value="<?php echo $ods[$i]->id ?>" <?php echo (array_search($ods[$i]->id, $metaOds) !== false && $metaOds) ? 'checked="checked"' : '' ?> <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 											<label class="form-check-label" for="<?php echo $ods[$i]->slug ?>">
 												<?php echo $ods[$i]->id . '. ' . $ods[$i]->titulo ?>
 											</label>
@@ -204,7 +206,7 @@ endif;
 										<?php
 									} ?>
 										<div class="form-check form-check-inline form-check-inline-pdi">
-											<input class="form-check-input" type="checkbox" id="<?php echo $pne[$i]->slug ?>" name="pne[]" value="<?php echo $pne[$i]->id ?>" <?php echo (array_search($pne[$i]->id, $metaPne) !== false && $metaPne) ? 'checked="checked"' : '' ?> <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+											<input class="form-check-input" type="checkbox" id="<?php echo $pne[$i]->slug ?>" name="pne[]" value="<?php echo $pne[$i]->id ?>" <?php echo (array_search($pne[$i]->id, $metaPne) !== false && $metaPne) ? 'checked="checked"' : '' ?> <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 											<label class="form-check-label" for="<?php echo $pne[$i]->slug ?>">
 												<?php echo $pne[$i]->id . '. ' . $pne[$i]->titulo ?>
 											</label>
@@ -228,7 +230,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-2">
-								<input type="text" name="valor_meta" id="valor_meta" class="form-control valor-meta  maskValor" value="<?php echo format_real($meta->valor_meta) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<input type="text" name="valor_meta" id="valor_meta" class="form-control valor-meta  maskValor" value="<?php echo format_real($meta->valor_meta) ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 							</div>
 							<div class="form-group col-md-4 form-group-inline">
 								<label for="justif-valor-meta"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
@@ -244,7 +246,7 @@ endif;
 								</div>
 							</div>
 							<div class="form-group col-md-2">
-								<input type="text" name="valor_inicial_meta" id="valor-inicial-meta" class="form-control maskValor" value="<?php echo format_real($meta->valor_inicial) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<input type="text" name="valor_inicial_meta" id="valor-inicial-meta" class="form-control maskValor" value="<?php echo format_real($meta->valor_inicial) ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 							</div>
 							<div class="form-group col-md-4 form-group-inline">
 								<label for="justif-valor-inicial"><?php _e('Justificativa', PDI_TEXT_DOMAIN) ?></label>
@@ -254,7 +256,7 @@ endif;
 								<label for="">
 									<?php _e('Data do Registro', PDI_TEXT_DOMAIN) ?>
 								</label>
-								<input type="text" name="data_registro_meta" id="data-registro-meta" class="form-control maskData" value="<?php echo convert_data_front($meta->data_registro) ?>" <?php echo ($nivel_1) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+								<input type="text" name="data_registro_meta" id="data-registro-meta" class="form-control maskData" value="<?php echo convert_data_front($meta->data_registro) ?>" <?php echo ($nivel_4) ? 'readonly' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 							</div>
 							<div class="clear-line"></div>
 							<div class="col-md-12">
@@ -294,7 +296,7 @@ endif;
 													<input type="text" name="justificativa_ano_meta[]" class="form-control" value="<?php echo $ano->justificativa ?>" <?php echo $inactive ? 'disabled' : '' ?>>
 												</div>
 												<div class="line-indicadores-anos">
-													<a class="remove-indicador" title="Remover" data-id-ano-indicador="<?php echo $ano->id ?>" <?php echo ($nivel_1) ? 'disabled' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+													<a class="remove-indicador" title="Remover" data-id-ano-indicador="<?php echo $ano->id ?>" <?php echo ($nivel_4) ? 'disabled' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 														<span class="dashicons dashicons-trash text-danger"></span>
 													</a>
 												</div>
@@ -302,7 +304,7 @@ endif;
 										<?php endforeach; ?>
 									</ul>
 									<div class="indicadores-button">
-										<button type="button" class="btn btn-success add-indicadores-anos" <?php echo ($nivel_1) ? 'disabled' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
+										<button type="button" class="btn btn-success add-indicadores-anos" <?php echo ($nivel_4) ? 'disabled' : '' ?> <?php echo $inactive ? 'disabled' : '' ?>>
 											<span class="dashicons dashicons-plus"></span>
 											<?php _e('Adicionar Indicador Ano', PDI_TEXT_DOMAIN) ?>
 										</button>
