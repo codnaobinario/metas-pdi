@@ -17,7 +17,7 @@ foreach ($indicares_anos as $indic_anos) {
 }
 
 // $valorInicial = $indicador->valor_inicial;
-$valorInicial = calc_valores_indicares_linha(null, $indicador->valor_meta, $indicador->valor_inicial);
+$valorInicial = pdi_calc_val_chart_line(null, $indicador->valor_meta, $indicador->valor_inicial);
 /* $anos = [2021, 2022, 2023, 2024, 2025];
 $valores1 = [0.25, 0.48, 0.61, 0, 0];
 $valores2 = [0, 0.68, 0.71, 0.88, 1]; */

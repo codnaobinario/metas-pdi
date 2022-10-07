@@ -501,7 +501,7 @@ function calc_valores_indicares_linha($valorInicial, $valorFinal, $valorAtual)
 
 function pdi_calc_val_chart_line($valorMeta, $valorAtual)
 {
-	$vlr = ($valorMeta / 100) * $valorAtual;
+	$vlr = ($valorAtual / $valorMeta) * 100;
 	return number_format($vlr, 2);
 }
 
