@@ -141,9 +141,9 @@ function pdi_get_indicadores_all(array $filter = array(), int $per_page = null, 
 	return PDI_DB::get_table(TABLE_INDICADORES, $filter, $per_page, $page, $order, $orderby, $query_string, $multi_order);
 }
 
-function pdi_get_indicadores_query(string $query_string = null)
+function pdi_get_indicadores_query(string $select = '*', string $query_string = null)
 {
-	return PDI_DB::get_table_query(TABLE_INDICADORES, $query_string);
+	return PDI_DB::get_table_query(TABLE_INDICADORES, $select, $query_string);
 }
 
 function pdi_count_indicadores_all(array $filter = array())

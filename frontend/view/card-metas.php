@@ -9,14 +9,15 @@ $pagnation = ceil(intval($count_total) / $view_pagination);
 
 if (!$variaveis) {
 	// $indicadores = pdi_get_indicadores_all(['active' => 1], $view_pagination, $page, 'grande_tema_id', 'ASC');
-	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse ON 
-						' . PREFIXO_TABLE . 'indicadores.objetivo_ouse_id = ' . PREFIXO_TABLE . 'objetivos_ouse.id
-						inner join ' . PREFIXO_TABLE . 'grande_tema ON 
-						' . PREFIXO_TABLE . 'indicadores.grande_tema_id = ' . PREFIXO_TABLE . 'grande_tema.id
-						order by ' . PREFIXO_TABLE . 'grande_tema.number ASC,
-						' . PREFIXO_TABLE . 'objetivos_ouse.number ASC,
-						' . PREFIXO_TABLE . 'indicadores.number ASC';
-	$indicadores = pdi_get_indicadores_query($query);
+	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse as ouse ON indicadores.objetivo_ouse_id = ouse.id
+						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
+						order by gt.number ASC,
+						ouse.number ASC,
+						indicadores.number ASC';
+
+	$indicadores = pdi_get_indicadores_query('indicadores.*', $query);
+
+	// print_r(json_encode($indicadores));
 } else {
 	$indicadores = $variaveis['indicadores'];
 	$page = $variaveis['page'];

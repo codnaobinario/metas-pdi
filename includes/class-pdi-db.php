@@ -1004,10 +1004,10 @@ class PDI_DB
 		return $select;
 	}
 
-	public static function get_table_query(string $table, string $query_string = null)
+	public static function get_table_query(string $table, string $select = '*', string $query_string = null)
 	{
 		global $wpdb;
-		$query = "SELECT * FROM " . self::$prefix_table . $table . ' ' . $query_string;
+		$query = "SELECT ${select} FROM " . self::$prefix_table . $table . ' as indicadores ' . $query_string;
 
 		// return $query;
 
