@@ -996,8 +996,7 @@ function pdi_pagination_indicadores()
 
 	$group = ' GROUP BY indicadores.id';
 
-	$oder = ' GROUP BY indicadores.id
-	order by gt.number ASC,
+	$oder = ' order by gt.number ASC,
 	ouse.number ASC,
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
