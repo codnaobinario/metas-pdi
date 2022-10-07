@@ -640,7 +640,8 @@ function pdi_filter_front_metas()
 		$where = rtrim($where, ' AND');
 	}
 
-	$oder = ' order by gt.number ASC,
+	$oder = ' GROUP BY indicadores.id
+	order by gt.number ASC,
 	ouse.number ASC,
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
@@ -992,7 +993,8 @@ function pdi_pagination_indicadores()
 		$where = rtrim($where, ' AND');
 	}
 
-	$oder = ' order by gt.number ASC,
+	$oder = ' GROUP BY indicadores.id
+	order by gt.number ASC,
 	ouse.number ASC,
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;

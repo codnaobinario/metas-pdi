@@ -11,6 +11,7 @@ if (!$variaveis) {
 	$offset = $view_pagination * ($page - 1);
 	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse as ouse ON indicadores.objetivo_ouse_id = ouse.id
 						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
+						GROUP BY indicadores.id
 						order by gt.number ASC,
 						ouse.number ASC,
 						indicadores.number ASC
