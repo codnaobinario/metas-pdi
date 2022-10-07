@@ -623,7 +623,7 @@ function pdi_filter_front_metas()
 						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
 						inner join ' . PREFIXO_TABLE . 'indicadores_anos as ind_anos ON indicadores.id = ind_anos.indicador_id';
 
-	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia) {
+	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia || $args->ods) {
 		$where = ' WHERE';
 		if ($args->grande_tema) {
 			$where .= " gt.id = {$args->grande_tema} AND";
@@ -634,6 +634,9 @@ function pdi_filter_front_metas()
 		if ($args->ano_referencia) {
 			$where .= " ind_anos.ano = {$args->ano_referencia} AND";
 		}
+		if ($args->ods) {
+			$where .= " JSON_CONTAINS(JSON_EXTRACT(indicadores.ods, '$[*]'), '\"{$args->ods}\"') = 1 AND";
+		}
 		$where = rtrim($where, ' AND');
 	}
 
@@ -642,8 +645,11 @@ function pdi_filter_front_metas()
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
 
+
 	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
-	$count_total = pdi_count_indicadores_all($filters);
+	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where);
+	$count_total = is_array($count_total) ? $count_total[0]->count : $count_total->count;
+	// $count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
 	$variavevis = [
 		'active' => true,
@@ -969,7 +975,7 @@ function pdi_pagination_indicadores()
 						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
 						inner join ' . PREFIXO_TABLE . 'indicadores_anos as ind_anos ON indicadores.id = ind_anos.indicador_id';
 
-	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia) {
+	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia || $args->ods) {
 		$where = ' WHERE';
 		if ($args->grande_tema) {
 			$where .= " gt.id = {$args->grande_tema} AND";
@@ -980,6 +986,9 @@ function pdi_pagination_indicadores()
 		if ($args->ano_referencia) {
 			$where .= " ind_anos.ano = {$args->ano_referencia} AND";
 		}
+		if ($args->ods) {
+			$where .= " JSON_CONTAINS(JSON_EXTRACT(indicadores.ods, '$[*]'), '\"{$args->ods}\"') = 1 AND";
+		}
 		$where = rtrim($where, ' AND');
 	}
 
@@ -989,7 +998,9 @@ function pdi_pagination_indicadores()
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
 
 	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
-	$count_total = pdi_count_indicadores_all($filters);
+	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where);
+	$count_total = is_array($count_total) ? $count_total[0]->count : $count_total->count;
+	// $count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
 
 	$variaveis = [

@@ -6,7 +6,7 @@
  * Description: Puglin de Plano de Desenvolvimento Institucional
  * Author: Núcleo Digital
  * Author URI: http://nucleodigital.cc
- * Version: 2.0.5
+ * Version: 2.0.6
  * License: GPLv2 or later
  * Text Domain: pdi-nucleo-digital
  * 
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-define('PDI_VERSION', '2.0.5');
+define('PDI_VERSION', '2.0.6');
 define('PDI_PATH', plugin_dir_path(__FILE__));
 define('PDI_LANG', plugin_dir_path(__FILE__) . '/lang/');
 define('PDI_UPLOAD', plugin_dir_path(__FILE__) . '/uploads/');
