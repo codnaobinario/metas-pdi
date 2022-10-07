@@ -6,7 +6,7 @@
  * Description: Puglin de Plano de Desenvolvimento Institucional
  * Author: Núcleo Digital
  * Author URI: http://nucleodigital.cc
- * Version: 2.0.2
+ * Version: 2.0.3
  * License: GPLv2 or later
  * Text Domain: pdi-nucleo-digital
  * 
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly.
 }
 
-define('PDI_VERSION', '2.0.2');
+define('PDI_VERSION', '2.0.3');
 define('PDI_PATH', plugin_dir_path(__FILE__));
 define('PDI_LANG', plugin_dir_path(__FILE__) . '/lang/');
 define('PDI_UPLOAD', plugin_dir_path(__FILE__) . '/uploads/');
@@ -100,6 +100,7 @@ function pdi_enqueue_front()
 		wp_enqueue_style('pdi_style_front', plugins_url('assets/css/style-front.css', __FILE__), array());
 		wp_enqueue_script('pdi_bootstrap_front', plugins_url('assets/js/bootstrap.min.js', __FILE__), array('jquery'));
 		wp_enqueue_script('pdi_script_mask', plugins_url('assets/js/jquery.mask.min.js', __FILE__), array('jquery'));
+		wp_enqueue_script('pdi_script_chartjs', plugins_url('assets/js/chart.min.js', __FILE__), array('jquery'));
 		wp_enqueue_script('pdi_script_function_front', plugins_url('assets/js/functions-front.js', __FILE__), array('jquery'));
 		wp_enqueue_script('pdi_script_front', plugins_url('assets/js/script-front.js', __FILE__), array('jquery'));
 

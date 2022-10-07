@@ -261,6 +261,10 @@
         pdi.objetivosOuse.remove($(this));
       });
 
+    $(document).on('click', '.btn-edit-eixo', function () {
+      pdi.eixos.update($(this));
+    });
+
     $(document).on('change', '#image-top', function () {
       enviar_imagem(this);
     });

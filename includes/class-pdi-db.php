@@ -762,7 +762,7 @@ class PDI_DB
 	 * @param string $table (Nome da tabela a ser buscada)
 	 * @return object
 	 */
-	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC', string $query_string = null)
+	public static function get_table(string $table,  array $filter = array(),  int $per_page = null,  int $page = 1,  string $order = null,  string $orderby = 'ASC', string $query_string = null, array $multi_order = [])
 	{
 		global $wpdb;
 		$query = "SELECT * FROM " . self::$prefix_table . $table;
@@ -802,10 +802,19 @@ class PDI_DB
 			$query .= " ORDER BY {$order} {$orderby}";
 		}
 
-		if ($per_page) {
-			$offset = ($per_page * ($page - 1));
-			$query .= " LIMIT {$per_page} OFFSET {$offset}";
+		if ($multi_order) {
+			$query .= " ORDER BY";
+			foreach ($multi_order as $order_ => $order_by) {
+				$query .= " {$order_} {$order_by}";
+			}
 		}
+
+		if ($multi_order)
+
+			if ($per_page) {
+				$offset = ($per_page * ($page - 1));
+				$query .= " LIMIT {$per_page} OFFSET {$offset}";
+			}
 
 		if ($query_string) {
 			$query .= $query_string;
@@ -953,7 +962,7 @@ class PDI_DB
 			$where_format,
 		);
 
-		return $update;
+		return $args;
 
 		if (!$update) {
 			return ($wpdb->insert_id) ? $wpdb->insert_id : false;
@@ -983,6 +992,22 @@ class PDI_DB
 		if ($args_query) {
 			$query = $query . ' ' . $args_query;
 		}
+
+		// return $query;
+
+		$select = $wpdb->get_results(
+			$wpdb->prepare(
+				$query
+			)
+		);
+
+		return $select;
+	}
+
+	public static function get_table_query(string $table, string $query_string = null)
+	{
+		global $wpdb;
+		$query = "SELECT * FROM " . self::$prefix_table . $table . ' ' . $query_string;
 
 		// return $query;
 

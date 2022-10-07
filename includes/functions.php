@@ -136,9 +136,14 @@ function pdi_delete_objetivos_ouse(array $args, array $format = null)
 	return PDI_DB::delete_option(TABLE_OBJETIVOS_OUSE, $args, $format);
 }
 
-function pdi_get_indicadores_all(array $filter = array(), int $per_page = null, int $page = 1, string $order = null, string $orderby = 'ASC', string $query_string = null)
+function pdi_get_indicadores_all(array $filter = array(), int $per_page = null, int $page = 1, string $order = null, string $orderby = 'ASC', string $query_string = null, array $multi_order = [])
 {
-	return PDI_DB::get_table(TABLE_INDICADORES, $filter, $per_page, $page, $order, $orderby, $query_string);
+	return PDI_DB::get_table(TABLE_INDICADORES, $filter, $per_page, $page, $order, $orderby, $query_string, $multi_order);
+}
+
+function pdi_get_indicadores_query(string $query_string = null)
+{
+	return PDI_DB::get_table_query(TABLE_INDICADORES, $query_string);
 }
 
 function pdi_count_indicadores_all(array $filter = array())
@@ -492,6 +497,12 @@ function calc_valores_indicares_linha($valorInicial, $valorFinal, $valorAtual)
 	$vlr2 = $vlr1 / 100;
 	$vlr3 = $valorAtual / $vlr2;
 	return number_format($vlr3 / 100, 2);
+}
+
+function pdi_calc_val_chart_line($valorMeta, $valorAtual)
+{
+	$vlr = ($valorMeta / 100) * $valorAtual;
+	return number_format($vlr, 2);
 }
 
 function calcular_porcentagem_acoes_concluidas($acoes)

@@ -256,7 +256,11 @@ $metas_por_ano = filtrar_metas_por_ano($indicador->indicadores_anos);
 						<!-- <div class="legenda-grafico-linha">
 							<?php _e('% de metas cumpripas sobre meta do indicador') ?>
 						</div> -->
-						<?php pdi_get_template_front('view/grafico-linha', $indicador) ?>
+						<canvas id="myChart-line-<?php echo $indicador->id ?>" height="400"></canvas>
+						<?php include PDI_FRONT . 'view/chart-line-script.php' ?>
+						<?php
+						// pdi_get_template_front('view/grafico-linha', $indicador) 
+						?>
 					</div>
 				</div>
 			</div>

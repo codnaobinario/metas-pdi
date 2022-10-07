@@ -90,6 +90,15 @@ class PDI_Menu_Admin
 
 		add_submenu_page(
 			'pdi',
+			'Eixos',
+			'Eixos',
+			'manage_options',
+			'pdi-eixos',
+			array($this, 'pdi_submenu_page_eixos')
+		);
+
+		add_submenu_page(
+			'pdi',
 			'Atores',
 			'Atores',
 			'manage_options',
@@ -159,6 +168,15 @@ class PDI_Menu_Admin
 		}
 
 		pdi_get_template_front('admin/objetivos-ouse');
+	}
+
+	public function pdi_submenu_page_eixos()
+	{
+		if (!current_user_can('manage_options')) {
+			wp_die(__('You do not have sufficient permissions to access this page.', PDI_TEXT_DOMAIN));
+		}
+
+		pdi_get_template_front('admin/eixos');
 	}
 
 	public function pdi_submenu_page_metas()

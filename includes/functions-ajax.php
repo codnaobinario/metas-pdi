@@ -318,8 +318,17 @@ function pdi_update_meta()
 		'%s',
 	];
 
-	$where = ['id' => $args->id];
+	$where = ['id' => intval($args->id)];
 	$where_format = ['%d'];
+
+	$teste = array(
+		'indicador_c' => count($indicador),
+		'format_c' => count($format),
+		'indicador' => $indicador,
+		'format' => $format,
+		'where' => $where,
+		'where_format' => $where_format,
+	);
 
 	pdi_update_metas_email(intval($args->id));
 	$update_indicador = pdi_update_indicadores($indicador, $where, $format, $where_format);
@@ -389,6 +398,7 @@ function pdi_update_meta()
 			'insert' => $insert,
 			'indicador' => $indicador,
 			'args' => $args,
+			'teste' => $teste,
 		)
 	);
 	exit;
@@ -1687,6 +1697,59 @@ function pdi_objetivo_ouse_remove()
 add_action('wp_ajax_pdi_objetivo_ouse_remove', 'pdi_objetivo_ouse_remove');
 add_action('wp_ajax_nopriv_pdi_objetivo_ouse_remove', 'pdi_objetivo_ouse_remove');
 
+function pdi_eixos_update()
+{
+	$eixoId = filter_input(INPUT_POST, 'eixo_id', FILTER_SANITIZE_NUMBER_INT);
+	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
+	parse_str($form, $args);
+	$args = (object) $args;
+
+	$dados = [
+		"descricao" 			=> $args->descricao,
+		"active" 					=> intval($args->active),
+		"updated_at" 			=> date('Y-m-d H:i:s'),
+	];
+	$format = [
+		"%s",
+		"%d",
+		"%s",
+	];
+	$where = ["id" => intval($eixoId)];
+	$format_where = ['%d'];
+
+	$update = pdi_update_eixo($dados, $where, $format, $format_where);
+
+	if (!$update) {
+		wp_send_json(
+			array(
+				'status' => false,
+				'error' => 'Erro ao atualizar Eixo',
+				'update' => $update,
+				'dados' => $dados
+			)
+		);
+		exit;
+	}
+
+	pdi_insert_logs(
+		'Eixo "' . $args->descricao . '" atualizado',
+		'update',
+		$dados
+	);
+
+	wp_send_json(
+		array(
+			'status' => true,
+			'update' => $update,
+			'dados' => $dados,
+			'idEixo' => $eixoId,
+		)
+	);
+	exit;
+}
+add_action('wp_ajax_pdi_eixos_update', 'pdi_eixos_update');
+add_action('wp_ajax_nopriv_pdi_eixos_update', 'pdi_eixos_update');
+
 function pdi_configs_update()
 {
 	$form = (isset($_POST['form'])) ? $_POST['form'] : null;
@@ -1702,20 +1765,6 @@ function pdi_configs_update()
 		'update',
 		$args
 	);
-
-	/* $result = [];
-	foreach ($args as $key => $value) {
-		$select = pdi_get_configs(['meta_key' => $key]);
-		
-		if(!$select) {
-			// Inserir Novo
-			$result[] = pdi_set_configs(['meta_key' => $key, 'meta_value' => $value]);
-		} else {
-			// Atualizar
-			$select = $select[0];
-			$result[] = pdi_update_configs(['meta_value' => $value], ['meta_key' => $key], ['%s'], ['%s']);
-		}
-	} */
 
 	wp_send_json(
 		array(

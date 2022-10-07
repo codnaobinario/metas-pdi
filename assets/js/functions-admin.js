@@ -584,6 +584,67 @@ var pdi = {
       });
     },
   },
+  eixos: {
+    update: function (btn) {
+      const id = btn.attr("data-eixo-id"),
+        form = btn.closest("form"),
+        action = "pdi_eixos_update";
+
+      this.ajax("update", action, id, form);
+    },
+    ajax: function (type, action, eixoId, form, table) {
+      var data = {};
+
+      if (type === "update" || type === "save") {
+        data = {
+          action: action,
+          form: form ? form.serialize() : "",
+          eixo_id: eixoId,
+        };
+      } else {
+        data = {
+          action: action,
+          eixo_id: eixoId,
+        };
+      }
+
+      jQuery.ajax({
+        type: "POST",
+        url: pdi_options_object.ajaxurl,
+        data: data,
+        dataType: "json",
+        beforeSend: function () {
+          if (type === "update" || type === "save") {
+            loadBlock.add(form);
+          } else {
+            loadBlock.add(table);
+          }
+        },
+        complete: function () {
+          if (type === "update" || type === "save") {
+            loadBlock.remove();
+          }
+        },
+        success: function (response) {
+          if (response.status === true) {
+            if (type === "update")
+              toastr.success("Eixo atualizado com sucesso!");
+
+            if (type === "save") {
+              toastr.success("Eixo inserido com sucesso!");
+              window.location.href = `?page=pdi-eixos&edit=${response.objetivo_ouse_id}`;
+            }
+
+            if (type === "remove")
+              toastr.success("Eixo removido com sucesso");
+          } else {
+            toastr.error(response.error);
+          }
+          if (response.html) table.html(response.html);
+        },
+      });
+    },
+  },
   configs: {
     save: function (btn) {
       const form = btn.closest("form"),

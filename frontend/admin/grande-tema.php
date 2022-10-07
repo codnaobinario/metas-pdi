@@ -23,7 +23,7 @@ else :
 						<?php _e('Ativar/Desativar', PDI_TEXT_DOMAIN) ?>
 					</div>
 					<div class="form-group col-md-9">
-						<input type="checkbox" name="active" id="active" class="form-control" <?php echo $gt[0]->active === '1' || !$gt[0]->active ? 'checked' : '' ?> value="1" />
+						<input type="checkbox" name="active" id="active" class="form-control" <?php echo $gt[0]->active === '1' ? 'checked' : '' ?> value="1" />
 					</div>
 					<div class="col-md-3 col-label">
 						<?php _e('Número', PDI_TEXT_DOMAIN) ?>
