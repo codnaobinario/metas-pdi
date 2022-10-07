@@ -640,15 +640,16 @@ function pdi_filter_front_metas()
 		$where = rtrim($where, ' AND');
 	}
 
-	$oder = ' GROUP BY indicadores.id
-	order by gt.number ASC,
+	$group = ' GROUP BY indicadores.id';
+
+	$oder = '	order by gt.number ASC,
 	ouse.number ASC,
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
 
 
-	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
-	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where);
+	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $group . $oder);
+	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where . $group);
 	$count_total = is_array($count_total) ? $count_total[0]->count : $count_total->count;
 	// $count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
@@ -993,14 +994,16 @@ function pdi_pagination_indicadores()
 		$where = rtrim($where, ' AND');
 	}
 
+	$group = ' GROUP BY indicadores.id';
+
 	$oder = ' GROUP BY indicadores.id
 	order by gt.number ASC,
 	ouse.number ASC,
 	indicadores.number ASC
 	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
 
-	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
-	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where);
+	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $group . $oder);
+	$count_total = pdi_get_indicadores_query('COUNT(*) as count', $query . $where . $group);
 	$count_total = is_array($count_total) ? $count_total[0]->count : $count_total->count;
 	// $count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
