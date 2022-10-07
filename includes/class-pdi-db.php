@@ -1008,7 +1008,7 @@ class PDI_DB
 	{
 		global $wpdb;
 		$query = "SELECT ${select} FROM " . self::$prefix_table . $table . ' as indicadores ' . $query_string;
-
+		// print_r($query);
 		// return $query;
 
 		$select = $wpdb->get_results(

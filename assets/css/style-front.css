@@ -1323,6 +1323,11 @@ form#filters-metas .form-row {
   font-size: 0.8rem;
 }
 
+.divisor_pagination {
+  font-size: 1.5rem;
+  margin: 0 5px;
+}
+
 @media screen and (max-width: 768px) {
   .grafico-linha-infos .linha {
     flex-direction: column;

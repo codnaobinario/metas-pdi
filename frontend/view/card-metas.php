@@ -24,6 +24,7 @@ if (!$variaveis) {
 	$indicadores = $variaveis['indicadores'];
 	$page = $variaveis['page'];
 	$pagnation = $variaveis['pagnation'];
+	$count_total = $variaveis['count_total'];
 }
 
 ?>
@@ -220,18 +221,44 @@ if (!$variaveis) {
 	</div>
 <?php endforeach; ?>
 <div class="pdi-pagination pagination-front">
-	<button type="button" class="btn pdi-pagination-prev" data-page="<?php echo $page - 1 ?>" <?php echo ($page <= 1) ? 'disabled' : '' ?>>Anterior</button>
-	<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="1" <?php echo (1 == $page) ? 'disabled' : '' ?>>
+
+	<?php if ($page > 1) : ?>
+		<button type="button" class="btn pdi-pagination-prev" data-page="<?php echo $page - 1 ?>" <?php echo ($page <= 1) ? 'disabled' : '' ?>>Anterior</button>
+	<?php endif; ?>
+
+	<!-- <button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="1" <?php echo (1 == $page) ? 'disabled' : '' ?>>
 		<?php echo $i + 1 ?>
-	</button>
-	<?php for ($i = 1; $i < ($pagnation - 1); $i++) : ?>
-		<?php if ($page) ?>
-		<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $i + 1 ?>" <?php echo ($i + 1 == $page) ? 'disabled' : '' ?>>
-			<?php echo $i + 1 ?>
-		</button>
+	</button> -->
+	<?php $divisor = true; ?>
+	<?php for ($i = 0; $i < $pagnation; $i++) : ?>
+		<?php if ($page) : ?>
+			<?php if ($i == 0) : ?>
+				<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $i + 1 ?>" <?php echo ($i + 1 == $page) ? 'disabled' : '' ?>>
+					<?php echo $i + 1 ?>
+				</button>
+			<?php elseif ($i + 1 == $pagnation) : ?>
+				<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $i + 1 ?>" <?php echo ($i + 1 == $page) ? 'disabled' : '' ?>>
+					<?php echo $i + 1 ?>
+				</button>
+			<?php elseif (($i + 3 >= $page && $i < $page + 2) || $i > $pagnation - 2) : ?>
+				<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $i + 1 ?>" <?php echo ($i + 1 == $page) ? 'disabled' : '' ?>>
+					<?php echo $i + 1 ?>
+				</button>
+				<?php $divisor = true ?>
+			<?php else : ?>
+				<?php if ($divisor) : ?>
+					<span class="divisor_pagination">...</span>
+					<?php $divisor = false ?>
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
 	<?php endfor; ?>
-	<button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $pagnation ?>" <?php echo ($pagnation == $page) ? 'disabled' : '' ?>>
+
+	<!-- <button type="button" class="btn pdi-pagination-btn <?php echo ($i + 1 == $page) ? 'active' : '' ?>" data-page="<?php echo $pagnation ?>" <?php echo ($pagnation == $page) ? 'disabled' : '' ?>>
 		<?php echo $i + 1 ?>
-	</button>
-	<button type="button" class="btn pdi-pagination-next" data-page="<?php echo $page + 1 ?>" <?php echo ($page >= $pagnation) ? 'disabled' : '' ?>>Próximo</button>
+	</button> -->
+
+	<?php if ($page < $pagnation) : ?>
+		<button type="button" class="btn pdi-pagination-next" data-page="<?php echo $page + 1 ?>" <?php echo ($page >= $pagnation) ? 'disabled' : '' ?>>Próximo</button>
+	<?php endif; ?>
 </div>
