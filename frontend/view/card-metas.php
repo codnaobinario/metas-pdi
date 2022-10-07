@@ -6,14 +6,15 @@ if (isset($_GET['page'])) $page = $_GET['page'];
 
 $count_total = pdi_count_indicadores_all(['active' => 1]);
 $pagnation = ceil(intval($count_total) / $view_pagination);
-
 if (!$variaveis) {
 	// $indicadores = pdi_get_indicadores_all(['active' => 1], $view_pagination, $page, 'grande_tema_id', 'ASC');
+	$offset = $view_pagination * ($page - 1);
 	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse as ouse ON indicadores.objetivo_ouse_id = ouse.id
 						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
 						order by gt.number ASC,
 						ouse.number ASC,
-						indicadores.number ASC';
+						indicadores.number ASC
+						LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
 
 	$indicadores = pdi_get_indicadores_query('indicadores.*', $query);
 

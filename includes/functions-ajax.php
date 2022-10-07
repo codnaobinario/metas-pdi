@@ -613,9 +613,36 @@ function pdi_filter_front_metas()
 
 	if ($filters['id']) $filters['id'] = array_unique($filters['id'], SORT_STRING);
 
+	if (!$page) $page = 1;
+
 	ob_start();
+	echo '<br>';
 	$view_pagination = 5;
-	$indicadores = pdi_get_indicadores_all($filters, $view_pagination, $page);
+	$offset = $view_pagination * ($page - 1);
+	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse as ouse ON indicadores.objetivo_ouse_id = ouse.id
+						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
+						inner join ' . PREFIXO_TABLE . 'indicadores_anos as ind_anos ON indicadores.id = ind_anos.indicador_id';
+
+	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia) {
+		$where = ' WHERE';
+		if ($args->grande_tema) {
+			$where .= " gt.id = {$args->grande_tema} AND";
+		}
+		if ($args->objetivo_ouse) {
+			$where .= " ouse.id = {$args->objetivo_ouse} AND";
+		}
+		if ($args->ano_referencia) {
+			$where .= " ind_anos.ano = {$args->ano_referencia} AND";
+		}
+		$where = rtrim($where, ' AND');
+	}
+
+	$oder = ' order by gt.number ASC,
+	ouse.number ASC,
+	indicadores.number ASC
+	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
+
+	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
 	$count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
 	$variavevis = [
@@ -937,7 +964,31 @@ function pdi_pagination_indicadores()
 
 	ob_start();
 	$view_pagination = 5;
-	$indicadores = pdi_get_indicadores_all($filters, $view_pagination, $page);
+	$offset = $view_pagination * ($page - 1);
+	$query = 'inner join ' . PREFIXO_TABLE . 'objetivos_ouse as ouse ON indicadores.objetivo_ouse_id = ouse.id
+						inner join ' . PREFIXO_TABLE . 'grande_tema as gt ON indicadores.grande_tema_id = gt.id
+						inner join ' . PREFIXO_TABLE . 'indicadores_anos as ind_anos ON indicadores.id = ind_anos.indicador_id';
+
+	if ($args->grande_tema || $args->objetivo_ouse || $args->ano_referencia) {
+		$where = ' WHERE';
+		if ($args->grande_tema) {
+			$where .= " gt.id = {$args->grande_tema} AND";
+		}
+		if ($args->objetivo_ouse) {
+			$where .= " ouse.id = {$args->objetivo_ouse} AND";
+		}
+		if ($args->ano_referencia) {
+			$where .= " ind_anos.ano = {$args->ano_referencia} AND";
+		}
+		$where = rtrim($where, ' AND');
+	}
+
+	$oder = ' order by gt.number ASC,
+	ouse.number ASC,
+	indicadores.number ASC
+	LIMIT ' . $view_pagination . ' OFFSET ' . $offset;
+
+	$indicadores = pdi_get_indicadores_query('indicadores.*', $query . $where . $oder);
 	$count_total = pdi_count_indicadores_all($filters);
 	$pagnation = ceil(intval($count_total) / $view_pagination);
 
