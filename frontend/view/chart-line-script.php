@@ -38,12 +38,12 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 
 			const data1 = [<?php echo $indicador->valor_inicial ?>];
 			<?php foreach ($valores1_view as $val1) : ?>
-				data1.push('<?php echo $indicador->valor_meta, $val1 ?>')
+				data1.push('<?php echo $val1 ?>')
 			<?php endforeach; ?>
 
 			const data2 = [<?php echo $indicador->valor_inicial ?>];
 			<?php foreach ($valores2_view as $val2) : ?>
-				data2.push('<?php echo $indicador->valor_meta, $val2 ?>')
+				data2.push('<?php echo $val2 ?>')
 			<?php endforeach; ?>
 
 			const ctx = document.getElementById(`myChart-line-<?php echo $indicador->id ?>`).getContext('2d');
