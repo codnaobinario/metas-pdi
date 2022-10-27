@@ -109,6 +109,15 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 								labelString: "Percentage",
 							},
 						},
+						x: {
+							title: {
+								display: true,
+								text: '(Valor Acumulado)',
+								font: {
+									size: 11,
+								},
+							},
+						}
 					},
 				}
 			});
