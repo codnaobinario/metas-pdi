@@ -16,11 +16,7 @@ foreach ($indicares_anos as $indic_anos) {
 	$anos[] = intval($indic_anos->ano);
 }
 
-// $valorInicial = $indicador->valor_inicial;
-$valorInicial = pdi_calc_val_chart_line(null, $indicador->valor_meta, $indicador->valor_inicial);
-/* $anos = [2021, 2022, 2023, 2024, 2025];
-$valores1 = [0.25, 0.48, 0.61, 0, 0];
-$valores2 = [0, 0.68, 0.71, 0.88, 1]; */
+$valorInicial = $indicador->valor_inicial;
 $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 // $anoInicial = $anos[0];
 
@@ -38,15 +34,25 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 
 			const data1 = [<?php echo $indicador->valor_inicial ?>];
 			<?php foreach ($valores1_view as $val1) : ?>
-				data1.push('<?php echo $val1 ?>')
+				<?php if ($val1 && $val1 > 0) : ?>
+					data1.push(<?php echo $val1 ?>)
+				<?php else : ?>
+					data1.push(null);
+				<?php endif; ?>
 			<?php endforeach; ?>
 
 			const data2 = [<?php echo $indicador->valor_inicial ?>];
 			<?php foreach ($valores2_view as $val2) : ?>
-				data2.push('<?php echo $val2 ?>')
+				<?php if ($val2 && $val2 > 0) : ?>
+					data2.push(<?php echo $val2 ?>)
+				<?php else : ?>
+					data2.push(null);
+				<?php endif; ?>
 			<?php endforeach; ?>
 
 			const ctx = document.getElementById(`myChart-line-<?php echo $indicador->id ?>`).getContext('2d');
+			console.log(data1);
+			console.log(data2);
 			const myChart = new Chart(ctx, {
 				type: 'line',
 				data: {
@@ -93,11 +99,11 @@ $anoInicial = intval(date('Y', strtotime($indicador->data_registro)));
 					scales: {
 						y: {
 							min: 0,
-							ticks: {
-								callback: function(value) {
-									return value + "%"
-								},
-							},
+							// ticks: {
+							// 	callback: function(value) {
+							// 		return value + "%"
+							// 	},
+							// },
 							scaleLabel: {
 								display: true,
 								labelString: "Percentage",
